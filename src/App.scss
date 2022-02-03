@@ -1,0 +1,212 @@
+:root {
+  --header-height: 50px;
+  --side-view-width: 400px;
+  --video-list-item-height: 80px;
+  --default-padding: 10px;
+}
+
+header {
+  height: var(--header-height);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.logo-and-label-container {
+  height: 60%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.App-logo {
+  height: 100%;
+  object-fit: contain;
+}
+
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+main {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: 1fr var(--side-view-width);
+  grid-template-rows: calc(100vh - var(--header-height));
+  width: 100%;
+}
+
+.secondary-tab {
+  padding: 0 10px;
+}
+
+.video-list {
+  padding: 10px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: 640px;
+  border: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+.video-list-item:last-child {
+  border-bottom: none;
+}
+
+.primary-tab {
+  padding-left: 10px;
+}
+
+.videoplayer {
+  aspect-ratio: 16/9;
+  width: 100%;
+  height: 100%;
+}
+
+.creator-info-box {
+  background-color: gray;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.creator-info-box-header {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  height: 80px;
+}
+
+.creator-info-box-header > img {
+  height: 100%;
+  width: 80px;
+  object-fit: cover;
+  margin-right: 5px;
+
+}
+
+input {
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 1.5rem;
+  line-height: 20px;
+  transition: border-color 0.3s ease-in-out;
+}
+
+input:hover {
+  border-color: aqua;
+}
+
+.tab-element {
+  box-sizing: border-box;
+  padding: var(--default-padding);
+  border: 1px solid lightgray;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.video-statistics {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rating {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.video-list-item {
+  height: var(--video-list-item-height);
+  width: 100%;
+  padding: 5px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border-bottom: 1px dotted lightgray;
+
+  .video-list-item-picture {
+    aspect-ratio: 16/9;
+    height: 100%;
+    cursor: pointer;
+    margin-right: 5px;
+    object-fit: cover;
+  }
+
+  .video-list-item-description {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}
+
+#full-stars-example-two {
+
+  display: inline;
+
+  /* use display:inline-flex to prevent whitespace issues. alternatively, you can put all the children of .rating-group on a single line */
+  .rating-group {
+    display: inline-flex;
+  }
+
+  /* make hover effect work properly in IE */
+  .rating__icon {
+    pointer-events: none;
+  }
+
+  /* hide radio inputs */
+  .rating__input {
+    position: absolute !important;
+    left: -9999px !important;
+  }
+
+  /* hide 'none' input from screenreaders */
+  .rating__input--none {
+    display: none
+  }
+
+  /* set icon padding and size */
+  .rating__label {
+    cursor: pointer;
+    padding: 0 0.1em;
+    font-size: 1.5rem;
+  }
+
+  /* set default star color */
+  .rating__icon--star {
+    color: red;
+  }
+
+  /* if any input is checked, make its following siblings grey */
+  .rating__input:checked ~ .rating__label .rating__icon--star {
+    color: #ddd;
+  }
+
+  /* make all stars orange on rating group hover */
+  .rating-group:hover .rating__label .rating__icon--star {
+    color: red;
+  }
+
+  /* make hovered input's following siblings grey on hover */
+  .rating__input:hover ~ .rating__label .rating__icon--star {
+    color: #ddd;
+  }
+}
+
+
+
+
+
+
+
+
+
