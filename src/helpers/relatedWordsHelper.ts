@@ -1,3 +1,5 @@
+import {getNRandomElements} from "./helper";
+
 const filmWords = [
     {
         "word": "photographic film",
@@ -11734,24 +11736,9171 @@ const musicWords = [
         "score": -0.3
     }
 ]
-
-/**
- * Shuffles array in place. ES6 version
- * @param {Array} a items An array containing the items.
- */
-function shuffle(a: any[]) {
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
+const petWords = [
+    {
+        "word": "animal",
+        "score": 21.39745562477481,
+        "from": "ol,w2v,wiki,swiki,wn,reddit-slashes"
+    },
+    {
+        "word": "dog",
+        "score": 13.868008255770015,
+        "from": "ol,w2v,wiki,swiki,reddit-slashes"
+    },
+    {
+        "word": "cat",
+        "score": 13.661037475098784,
+        "from": "ol,w2v,wiki,swiki,reddit-slashes"
+    },
+    {
+        "word": "bird",
+        "score": 8.488420043300811,
+        "from": "ol,w2v,wiki,swiki"
+    },
+    {
+        "word": "caress",
+        "score": 8.074646153846153,
+        "from": "ol,wn,wn,reddit-slashes"
+    },
+    {
+        "word": "livestock",
+        "score": 7.749304466501241,
+        "from": "ol,wiki,reddit-slashes"
+    },
+    {
+        "word": "rodent",
+        "score": 7.654349451869922,
+        "from": "w2v,wiki,swiki,reddit-slashes"
+    },
+    {
+        "word": "fondle",
+        "score": 5.432792307692307,
+        "from": "ol,wn,wn"
+    },
+    {
+        "word": "loved",
+        "score": 4.618476923076923,
+        "from": "ol,wn,reddit-slashes"
+    },
+    {
+        "word": "turtle",
+        "score": 4.604535716282127,
+        "from": "ol,w2v,wiki"
+    },
+    {
+        "word": "fish",
+        "from": "wiki,swiki,reddit-slashes",
+        "score": 4.237500000000001
+    },
+    {
+        "word": "baby",
+        "score": 3.6967966135246977,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "animals",
+        "score": 3.6644157909321287,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "toy",
+        "score": 3.5665173465711897,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "ducky",
+        "score": 3.077969230769231,
+        "from": "ol,wn"
+    },
+    {
+        "word": "deary",
+        "score": 3.043276923076923,
+        "from": "ol,wn"
+    },
+    {
+        "word": "favorite",
+        "score": 3.0348615384615387,
+        "from": "ol,wn"
+    },
+    {
+        "word": "dearie",
+        "score": 3.004138461538462,
+        "from": "ol,wn"
+    },
+    {
+        "word": "preferred",
+        "score": 2.990153846153846,
+        "from": "ol,wn"
+    },
+    {
+        "word": "favourite",
+        "score": 2.9738923076923074,
+        "from": "ol,wn"
+    },
+    {
+        "word": "favored",
+        "score": 2.965753846153846,
+        "from": "ol,wn"
+    },
+    {
+        "word": "darling",
+        "score": 2.9656307692307693,
+        "from": "ol,wn"
+    },
+    {
+        "word": "positron emission tomography",
+        "score": 2.701246153846154,
+        "from": "ol,wn"
+    },
+    {
+        "word": "rabbit",
+        "score": 2.6030999151074634,
+        "from": "w2v,swiki,reddit-slashes"
+    },
+    {
+        "word": "ferret",
+        "from": "wiki,swiki",
+        "score": 2.4955645161290323
+    },
+    {
+        "word": "eat",
+        "score": 2.320335785652393,
+        "from": "w2v,swiki"
+    },
+    {
+        "word": "rats",
+        "score": 2.289195633436376,
+        "from": "w2v,wiki"
+    },
+    {
+        "word": "beast",
+        "score": 2.2704153846153847,
+        "from": "ol,wn"
+    },
+    {
+        "word": "reptile",
+        "from": "wiki,swiki",
+        "score": 2.2028225806451616
+    },
+    {
+        "word": "mice",
+        "score": 2.201631158629247,
+        "from": "w2v,wiki"
+    },
+    {
+        "word": "hamster",
+        "score": 2.1890669975186103,
+        "from": "ol,wiki"
+    },
+    {
+        "word": "tomography",
+        "score": 2.1828769230769227,
+        "from": "ol,wn"
+    },
+    {
+        "word": "puppy",
+        "score": 2.134450324647487,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "domestication",
+        "from": "wiki,swiki",
+        "score": 2.00258064516129
+    },
+    {
+        "word": "arthropod",
+        "from": "wiki,swiki",
+        "score": 1.9100806451612904
+    },
+    {
+        "word": "kitten",
+        "score": 1.8985598067832656,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "bug",
+        "score": 1.843992642058497,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "tarantula",
+        "from": "wiki,swiki",
+        "score": 1.834677419354839
+    },
+    {
+        "word": "creature",
+        "score": 1.7999999999999998,
+        "from": "wn,reddit-slashes"
+    },
+    {
+        "word": "cute",
+        "score": 1.7721558708126977,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "peeve",
+        "score": 1.7635603721342386,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "peeves",
+        "score": 1.739145770214924,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "pets",
+        "score": 1.569378665883184,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "hermit crab",
+        "from": "wiki,swiki",
+        "score": 1.459274193548387
+    },
+    {
+        "word": "guinea pig",
+        "from": "wiki,swiki",
+        "score": 1.4548387096774194
+    },
+    {
+        "word": "dogs",
+        "score": 1.4300298543825072,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "cats",
+        "score": 1.3910278092309512,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "companion",
+        "score": 1.3705846153846153,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "elephant",
+        "score": 1.3667340587648833,
+        "from": "w2v,swiki"
+    },
+    {
+        "word": "children",
+        "from": "wiki,reddit-slashes",
+        "score": 1.3290322580645162
+    },
+    {
+        "word": "rat",
+        "score": 1.324012967779549,
+        "from": "w2v,swiki"
+    },
+    {
+        "word": "food",
+        "score": 1.3237416749654969,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "monkey",
+        "score": 1.316798192614106,
+        "from": "w2v,wiki"
+    },
+    {
+        "word": "feed",
+        "score": 1.3021211034541822,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "mouse",
+        "score": 1.2967218483637821,
+        "from": "w2v,swiki"
+    },
+    {
+        "word": "domestic",
+        "score": 1.2922923076923079,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "friend",
+        "score": 1.2727384615384616,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "veterinarian",
+        "score": 1.2600501240694788,
+        "from": "ol,wiki"
+    },
+    {
+        "word": "meat",
+        "score": 1.2586427728067313,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "sheep",
+        "score": 1.2499092801823184,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "kids",
+        "score": 1.23011363964011,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "familiar",
+        "score": 1.2129384615384615,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "human",
+        "from": "wiki,swiki,reddit-slashes",
+        "score": 1.2000000000000002
+    },
+    {
+        "word": "kennel",
+        "score": 1.182753846153846,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "pug",
+        "score": 1.1826923076923077,
+        "from": "ol,wiki"
+    },
+    {
+        "word": "groomer",
+        "score": 1.1230015025522881,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "breeder",
+        "from": "wiki,reddit-slashes",
+        "score": 0.864516129032258
+    },
+    {
+        "word": "best-loved",
+        "score": 0.78,
+        "from": "wn"
+    },
+    {
+        "word": "preferent",
+        "score": 0.78,
+        "from": "wn"
+    },
+    {
+        "word": "altruistic",
+        "from": "wiki",
+        "score": 0.767741935483871
+    },
+    {
+        "word": "labour",
+        "from": "swiki",
+        "score": 0.7375
+    },
+    {
+        "word": "gerbil",
+        "from": "wiki",
+        "score": 0.7096774193548387
+    },
+    {
+        "word": "imaging",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "brute",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "fauna",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "choler",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "fretfulness",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "irritability",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "peevishness",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "petulance",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "lover",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "chosen",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "gentle",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "neck",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "chinchilla",
+        "from": "wiki",
+        "score": 0.6967741935483871
+    },
+    {
+        "word": "parrot",
+        "from": "wiki",
+        "score": 0.6645161290322581
+    },
+    {
+        "word": "passerine",
+        "from": "wiki",
+        "score": 0.6580645161290322
+    },
+    {
+        "word": "fowl",
+        "from": "wiki",
+        "score": 0.6516129032258065
+    },
+    {
+        "word": "ailurophile",
+        "from": "wiki",
+        "score": 0.6483870967741935
+    },
+    {
+        "word": "cynophilia",
+        "from": "wiki",
+        "score": 0.6419354838709678
+    },
+    {
+        "word": "alligator",
+        "from": "wiki",
+        "score": 0.6322580645161291
+    },
+    {
+        "word": "crocodile",
+        "from": "wiki",
+        "score": 0.6258064516129032
+    },
+    {
+        "word": "lizard",
+        "from": "wiki",
+        "score": 0.6193548387096774
+    },
+    {
+        "word": "snake",
+        "from": "wiki",
+        "score": 0.6129032258064515
+    },
+    {
+        "word": "aquarium",
+        "from": "wiki",
+        "score": 0.6064516129032258
+    },
+    {
+        "word": "crossness",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "fussiness",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "macushla",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "mollycoddle",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "canoodle",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "amphibians",
+        "from": "wiki",
+        "score": 0.5806451612903225
+    },
+    {
+        "word": "frog",
+        "from": "wiki",
+        "score": 0.5741935483870968
+    },
+    {
+        "word": "salamanders",
+        "from": "wiki",
+        "score": 0.5677419354838709
+    },
+    {
+        "word": "pooch",
+        "score": 0.5582692307692307,
+        "from": "ol"
+    },
+    {
+        "word": "doggie",
+        "score": 0.5474538461538462,
+        "from": "ol"
+    },
+    {
+        "word": "pup",
+        "score": 0.5429461538461539,
+        "from": "ol"
+    },
+    {
+        "word": "doggy",
+        "score": 0.5407076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "equine",
+        "from": "wiki",
+        "score": 0.5354838709677419
+    },
+    {
+        "word": "bovine",
+        "from": "wiki",
+        "score": 0.5290322580645161
+    },
+    {
+        "word": "pig",
+        "score": 0.5072378101136653,
+        "from": "w2v"
+    },
+    {
+        "word": "kitty",
+        "score": 0.5061538461538462,
+        "from": "ol"
+    },
+    {
+        "word": "toys",
+        "score": 0.5007399441795302,
+        "from": "w2v"
+    },
+    {
+        "word": "cow",
+        "score": 0.49713444103065024,
+        "from": "w2v"
+    },
+    {
+        "word": "scholars",
+        "from": "wiki",
+        "score": 0.4967741935483871
+    },
+    {
+        "word": "working animal",
+        "from": "wiki",
+        "score": 0.4935483870967741
+    },
+    {
+        "word": "eating",
+        "score": 0.49235406944477617,
+        "from": "w2v"
+    },
+    {
+        "word": "babies",
+        "score": 0.4847149941947394,
+        "from": "w2v"
+    },
+    {
+        "word": "companionship",
+        "score": 0.4821615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "laboratory animal",
+        "from": "wiki",
+        "score": 0.4806451612903225
+    },
+    {
+        "word": "candy",
+        "score": 0.4748115082279738,
+        "from": "w2v"
+    },
+    {
+        "word": "pigs",
+        "score": 0.4747487884216848,
+        "from": "w2v"
+    },
+    {
+        "word": "animal cognition",
+        "from": "wiki",
+        "score": 0.47419354838709676
+    },
+    {
+        "word": "treats",
+        "score": 0.4696423922864059,
+        "from": "w2v"
+    },
+    {
+        "word": "mascot",
+        "score": 0.4659615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "chocolate",
+        "from": "wiki",
+        "score": 0.45806451612903226
+    },
+    {
+        "word": "cloned",
+        "score": 0.45529582102412963,
+        "from": "w2v"
+    },
+    {
+        "word": "household",
+        "score": 0.4532076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "droppings",
+        "score": 0.4515574279894782,
+        "from": "w2v"
+    },
+    {
+        "word": "cows",
+        "score": 0.4506879211561696,
+        "from": "w2v"
+    },
+    {
+        "word": "lagomorph",
+        "from": "swiki",
+        "score": 0.45000000000000007
+    },
+    {
+        "word": "whale",
+        "score": 0.4499369263811538,
+        "from": "w2v"
+    },
+    {
+        "word": "newborn",
+        "score": 0.44825182886599324,
+        "from": "w2v"
+    },
+    {
+        "word": "stuffed",
+        "score": 0.44746604179095206,
+        "from": "w2v"
+    },
+    {
+        "word": "civet",
+        "score": 0.44703511267232793,
+        "from": "w2v"
+    },
+    {
+        "word": "puppies",
+        "score": 0.446369443366655,
+        "from": "w2v"
+    },
+    {
+        "word": "feeding",
+        "score": 0.44604503602609386,
+        "from": "w2v"
+    },
+    {
+        "word": "honey",
+        "score": 0.4457153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "dander",
+        "score": 0.4432394849523127,
+        "from": "w2v"
+    },
+    {
+        "word": "pill",
+        "score": 0.4431432279668564,
+        "from": "w2v"
+    },
+    {
+        "word": "bait",
+        "score": 0.44255027207041164,
+        "from": "w2v"
+    },
+    {
+        "word": "goat",
+        "score": 0.44153234744346037,
+        "from": "w2v"
+    },
+    {
+        "word": "mad",
+        "score": 0.4410567254180814,
+        "from": "w2v"
+    },
+    {
+        "word": "poison",
+        "score": 0.44033817557317867,
+        "from": "w2v"
+    },
+    {
+        "word": "panda",
+        "score": 0.43950860385563345,
+        "from": "w2v"
+    },
+    {
+        "word": "shark",
+        "score": 0.43815118933772296,
+        "from": "w2v"
+    },
+    {
+        "word": "kit",
+        "score": 0.43798338471302317,
+        "from": "w2v"
+    },
+    {
+        "word": "bites",
+        "score": 0.4363163094117515,
+        "from": "w2v"
+    },
+    {
+        "word": "boy",
+        "score": 0.43556153846153844,
+        "from": "ol"
+    },
+    {
+        "word": "house rabbit",
+        "from": "wiki",
+        "score": 0.4354838709677418
+    },
+    {
+        "word": "dear",
+        "score": 0.4347076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "infected",
+        "score": 0.43437718455688223,
+        "from": "w2v"
+    },
+    {
+        "word": "packs",
+        "score": 0.4337957499133985,
+        "from": "w2v"
+    },
+    {
+        "word": "sweetheart",
+        "score": 0.4330769230769231,
+        "from": "ol"
+    },
+    {
+        "word": "small",
+        "score": 0.43151538461538463,
+        "from": "ol"
+    },
+    {
+        "word": "bugs",
+        "score": 0.4306848637898489,
+        "from": "w2v"
+    },
+    {
+        "word": "ornamental",
+        "score": 0.4297846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "pills",
+        "score": 0.4295015872500004,
+        "from": "w2v"
+    },
+    {
+        "word": "octopus",
+        "score": 0.42920397411438344,
+        "from": "w2v"
+    },
+    {
+        "word": "spoon",
+        "score": 0.4286384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "fake",
+        "score": 0.4275803718236891,
+        "from": "w2v"
+    },
+    {
+        "word": "hat",
+        "score": 0.4265538461538462,
+        "from": "ol"
+    },
+    {
+        "word": "silly",
+        "score": 0.42654615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "tame",
+        "score": 0.4264769230769231,
+        "from": "ol"
+    },
+    {
+        "word": "bite",
+        "score": 0.42641138694967956,
+        "from": "w2v"
+    },
+    {
+        "word": "habits",
+        "score": 0.4259875333152603,
+        "from": "w2v"
+    },
+    {
+        "word": "begonia",
+        "from": "wiki",
+        "score": 0.42580645161290326
+    },
+    {
+        "word": "little",
+        "score": 0.42567692307692306,
+        "from": "ol"
+    },
+    {
+        "word": "fart",
+        "score": 0.42553846153846153,
+        "from": "ol"
+    },
+    {
+        "word": "registry",
+        "score": 0.42545374348357534,
+        "from": "w2v"
+    },
+    {
+        "word": "goldfish",
+        "score": 0.4251882105561449,
+        "from": "w2v"
+    },
+    {
+        "word": "amphibian",
+        "from": "swiki",
+        "score": 0.425
+    },
+    {
+        "word": "enchanting",
+        "score": 0.42424615384615383,
+        "from": "ol"
+    },
+    {
+        "word": "cure",
+        "score": 0.42410464594273917,
+        "from": "w2v"
+    },
+    {
+        "word": "pocket",
+        "score": 0.42335384615384614,
+        "from": "ol"
+    },
+    {
+        "word": "chickens",
+        "score": 0.42334547555873314,
+        "from": "w2v"
+    },
+    {
+        "word": "drink",
+        "score": 0.4226180897555818,
+        "from": "w2v"
+    },
+    {
+        "word": "domestic pig",
+        "from": "wiki",
+        "score": 0.4225806451612904
+    },
+    {
+        "word": "smoking",
+        "score": 0.42245063779714914,
+        "from": "w2v"
+    },
+    {
+        "word": "clone",
+        "score": 0.42222698738555675,
+        "from": "w2v"
+    },
+    {
+        "word": "popular",
+        "score": 0.4221076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "repellent",
+        "score": 0.42157546211426505,
+        "from": "w2v"
+    },
+    {
+        "word": "poof",
+        "score": 0.42035384615384613,
+        "from": "ol"
+    },
+    {
+        "word": "vendor",
+        "score": 0.4195001982091679,
+        "from": "w2v"
+    },
+    {
+        "word": "dolphin",
+        "score": 0.4193666255358125,
+        "from": "w2v"
+    },
+    {
+        "word": "like",
+        "score": 0.41923444445263586,
+        "from": "w2v"
+    },
+    {
+        "word": "dumb",
+        "score": 0.41896923076923076,
+        "from": "ol"
+    },
+    {
+        "word": "plaything",
+        "score": 0.41891538461538463,
+        "from": "ol"
+    },
+    {
+        "word": "condoms",
+        "score": 0.41867359683032007,
+        "from": "w2v"
+    },
+    {
+        "word": "stupid",
+        "score": 0.41843846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "diet",
+        "score": 0.4178129639861245,
+        "from": "w2v"
+    },
+    {
+        "word": "fanciers",
+        "score": 0.41734393264468195,
+        "from": "w2v"
+    },
+    {
+        "word": "eats",
+        "score": 0.41658405445737046,
+        "from": "w2v"
+    },
+    {
+        "word": "products",
+        "score": 0.4165839673225588,
+        "from": "w2v"
+    },
+    {
+        "word": "diaper",
+        "score": 0.4163018743633654,
+        "from": "w2v"
+    },
+    {
+        "word": "beautiful",
+        "score": 0.4156846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "duck",
+        "score": 0.4151231473314306,
+        "from": "w2v"
+    },
+    {
+        "word": "dairy",
+        "score": 0.41497969098899457,
+        "from": "w2v"
+    },
+    {
+        "word": "prescription",
+        "score": 0.41383139978355105,
+        "from": "w2v"
+    },
+    {
+        "word": "industrialisation",
+        "from": "wiki",
+        "score": 0.4129032258064516
+    },
+    {
+        "word": "packages",
+        "score": 0.4128263567594524,
+        "from": "w2v"
+    },
+    {
+        "word": "doll",
+        "score": 0.4125574604685089,
+        "from": "w2v"
+    },
+    {
+        "word": "ate",
+        "score": 0.41245811755092116,
+        "from": "w2v"
+    },
+    {
+        "word": "medicines",
+        "score": 0.41241172956946764,
+        "from": "w2v"
+    },
+    {
+        "word": "cabbage",
+        "score": 0.41234615384615386,
+        "from": "ol"
+    },
+    {
+        "word": "milk",
+        "score": 0.4120946370883052,
+        "from": "w2v"
+    },
+    {
+        "word": "favoured",
+        "score": 0.41195384615384617,
+        "from": "ol"
+    },
+    {
+        "word": "kits",
+        "score": 0.4118946752796531,
+        "from": "w2v"
+    },
+    {
+        "word": "company",
+        "score": 0.41134615384615386,
+        "from": "ol"
+    },
+    {
+        "word": "insect",
+        "score": 0.4113388470195406,
+        "from": "w2v"
+    },
+    {
+        "word": "mosquito",
+        "score": 0.41092193802625415,
+        "from": "w2v"
+    },
+    {
+        "word": "snack",
+        "score": 0.4108878466320822,
+        "from": "w2v"
+    },
+    {
+        "word": "toothpaste",
+        "score": 0.4107902006241874,
+        "from": "w2v"
+    },
+    {
+        "word": "pretty",
+        "score": 0.4104076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "cattle",
+        "score": 0.41009715648747297,
+        "from": "w2v"
+    },
+    {
+        "word": "spectator",
+        "score": 0.40996923076923075,
+        "from": "ol"
+    },
+    {
+        "word": "stroke",
+        "score": 0.4064846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "obesity",
+        "from": "wiki",
+        "score": 0.4064516129032258
+    },
+    {
+        "word": "chip",
+        "score": 0.4059615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "spit",
+        "score": 0.40573076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "polyethylene",
+        "score": 0.4028538461538462,
+        "from": "ol"
+    },
+    {
+        "word": "toe",
+        "score": 0.4023076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "rand",
+        "from": "wiki",
+        "score": 0.39999999999999997
+    },
+    {
+        "word": "animate being",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "teacher's pet",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "make out",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "cer",
+        "score": 0.3989,
+        "from": "ol"
+    },
+    {
+        "word": "tec",
+        "score": 0.3941230769230769,
+        "from": "ol"
+    },
+    {
+        "word": "trp",
+        "score": 0.3924384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "puff",
+        "score": 0.3918,
+        "from": "ol"
+    },
+    {
+        "word": "compagnie",
+        "score": 0.39144615384615383,
+        "from": "ol"
+    },
+    {
+        "word": "bang",
+        "score": 0.3914384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "journeyman",
+        "score": 0.3914384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "positron",
+        "score": 0.3914384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "societal",
+        "score": 0.3914384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "beagle",
+        "score": 0.39136923076923075,
+        "from": "ol"
+    },
+    {
+        "word": "chihuahua",
+        "score": 0.3913615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "dachshund",
+        "score": 0.3913384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "poodle",
+        "score": 0.3912846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "ethicist",
+        "from": "wiki",
+        "score": 0.39032258064516123
+    },
+    {
+        "word": "animal welfare",
+        "from": "wiki",
+        "score": 0.38129032258064516
+    },
+    {
+        "word": "non-human",
+        "from": "wiki",
+        "score": 0.3774193548387096
+    },
+    {
+        "word": "lapdog",
+        "score": 0.36693846153846155,
+        "from": "ol"
+    },
+    {
+        "word": "sematary",
+        "score": 0.3544838533119957,
+        "from": "w2v"
+    },
+    {
+        "word": "houseplant",
+        "from": "wiki",
+        "score": 0.3516129032258064
+    },
+    {
+        "word": "philodendron",
+        "from": "wiki",
+        "score": 0.3451612903225806
+    },
+    {
+        "word": "cosset",
+        "score": 0.3395846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "poinsettias",
+        "from": "wiki",
+        "score": 0.33225806451612894
+    },
+    {
+        "word": "cuddly",
+        "score": 0.3201089824311074,
+        "from": "w2v"
+    },
+    {
+        "word": "animalistic",
+        "score": 0.3189153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "wildlife",
+        "from": "wiki",
+        "score": 0.3161290322580645
+    },
+    {
+        "word": "tep",
+        "score": 0.30526923076923074,
+        "from": "ol"
+    },
+    {
+        "word": "condominium",
+        "from": "wiki",
+        "score": 0.2967741935483871
+    },
+    {
+        "word": "freshwater snail",
+        "from": "wiki",
+        "score": 0.29354838709677417
+    },
+    {
+        "word": "fdg",
+        "score": 0.2914461538461538,
+        "from": "ol"
+    },
+    {
+        "word": "schnauzer",
+        "score": 0.2912769230769231,
+        "from": "ol"
+    },
+    {
+        "word": "lease",
+        "from": "wiki",
+        "score": 0.29032258064516125
+    },
+    {
+        "word": "sea snail",
+        "from": "wiki",
+        "score": 0.28709677419354845
+    },
+    {
+        "word": "property",
+        "from": "wiki",
+        "score": 0.27741935483870966
+    },
+    {
+        "word": "ownership",
+        "from": "wiki",
+        "score": 0.27096774193548384
+    },
+    {
+        "word": "horse",
+        "from": "swiki",
+        "score": 0.26875
+    },
+    {
+        "word": "personhood",
+        "from": "wiki",
+        "score": 0.2645161290322581
+    },
+    {
+        "word": "pocket pet",
+        "from": "wiki",
+        "score": 0.2419354838709678
+    },
+    {
+        "word": "rottweiler",
+        "from": "wiki",
+        "score": 0.23548387096774195
+    },
+    {
+        "word": "social interaction",
+        "from": "wiki",
+        "score": 0.22258064516129022
+    },
+    {
+        "word": "therapy animals",
+        "from": "wiki",
+        "score": 0.2161290322580645
+    },
+    {
+        "word": "divorce",
+        "from": "wiki",
+        "score": 0.2129032258064516
+    },
+    {
+        "word": "children's hospital",
+        "from": "wiki",
+        "score": 0.2096774193548388
+    },
+    {
+        "word": "estate",
+        "from": "wiki",
+        "score": 0.20645161290322578
+    },
+    {
+        "word": "ox",
+        "from": "swiki",
+        "score": 0.20625
+    },
+    {
+        "word": "nursing homes",
+        "from": "wiki",
+        "score": 0.20322580645161287
+    },
+    {
+        "word": "inheritance",
+        "from": "wiki",
+        "score": 0.2
+    },
+    {
+        "word": "animal rights organizations",
+        "from": "wiki",
+        "score": 0.18387096774193545
+    },
+    {
+        "word": "belgium",
+        "from": "wiki",
+        "score": 0.18064516129032254
+    },
+    {
+        "word": "donkey",
+        "from": "swiki",
+        "score": 0.175
+    },
+    {
+        "word": "netherlands",
+        "from": "wiki",
+        "score": 0.17419354838709677
+    },
+    {
+        "word": "university of bristol",
+        "from": "wiki",
+        "score": 0.17096774193548392
+    },
+    {
+        "word": "blacklisting",
+        "from": "wiki",
+        "score": 0.16129032258064513
+    },
+    {
+        "word": "falcon",
+        "from": "swiki",
+        "score": 0.14375
+    },
+    {
+        "word": "domesticated",
+        "from": "wiki",
+        "score": 0.13935483870967738
+    },
+    {
+        "word": "lilium longiflorum",
+        "from": "wiki",
+        "score": 0.1387096774193548
+    },
+    {
+        "word": "kangaroo",
+        "from": "wiki",
+        "score": 0.12903225806451613
+    },
+    {
+        "word": "armadillo",
+        "from": "wiki",
+        "score": 0.1225806451612903
+    },
+    {
+        "word": "aloe vera",
+        "from": "wiki",
+        "score": 0.11935483870967745
+    },
+    {
+        "word": "sloth",
+        "from": "wiki",
+        "score": 0.11612903225806448
+    },
+    {
+        "word": "pigeon",
+        "from": "swiki",
+        "score": 0.11249999999999999
+    },
+    {
+        "word": "guide dog",
+        "from": "wiki",
+        "score": 0.09354838709677415
+    },
+    {
+        "word": "golden retriever",
+        "score": 0.09135384615384617,
+        "from": "ol"
+    },
+    {
+        "word": "basset hound",
+        "score": 0.09133076923076922,
+        "from": "ol"
+    },
+    {
+        "word": "shetland sheepdog",
+        "score": 0.09132307692307695,
+        "from": "ol"
+    },
+    {
+        "word": "french bulldog",
+        "score": 0.09129999999999999,
+        "from": "ol"
+    },
+    {
+        "word": "great dane",
+        "score": 0.09129230769230773,
+        "from": "ol"
+    },
+    {
+        "word": "lhasa apso",
+        "score": 0.09126923076923077,
+        "from": "ol"
+    },
+    {
+        "word": "animal-assisted therapy",
+        "from": "wiki",
+        "score": 0.08709677419354833
+    },
+    {
+        "word": "therapy dog",
+        "from": "wiki",
+        "score": 0.08064516129032262
+    },
+    {
+        "word": "pet ownership among the homeless",
+        "from": "wiki",
+        "score": 0.0741935483870968
+    },
+    {
+        "word": "european convention for the protection of pet animals",
+        "from": "wiki",
+        "score": 0.06774193548387097
+    },
+    {
+        "word": "whitelisting",
+        "from": "wiki",
+        "score": 0.06774193548387095
+    },
+    {
+        "word": "council of europe",
+        "from": "wiki",
+        "score": 0.06129032258064515
+    },
+    {
+        "word": "western world",
+        "from": "wiki",
+        "score": 0.05483870967741933
+    },
+    {
+        "word": "rodents",
+        "from": "swiki",
+        "score": 0.04999999999999999
+    },
+    {
+        "word": "breed-specific legislation",
+        "from": "wiki",
+        "score": 0.048387096774193505
+    },
+    {
+        "word": "house",
+        "score": 0.042,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "pit bull",
+        "from": "wiki",
+        "score": 0.041935483870967794
+    },
+    {
+        "word": "exotic pet",
+        "from": "wiki",
+        "score": 0.022580645161290325
+    },
+    {
+        "word": "owner",
+        "score": 0.02,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "master",
+        "score": 0.018,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mount",
+        "score": 0.016,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "play",
+        "score": 0.014,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "person",
+        "score": 0.012,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "kid",
+        "score": 0.01,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "slave",
+        "score": 0.01,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "child",
+        "score": 0.01,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "egg",
+        "score": 0.01,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "canid hybrid",
+        "from": "wiki",
+        "score": 0.009677419354838679
+    },
+    {
+        "word": "lint",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "walking",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "minion",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "massage",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "color",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "home",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "vet",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "photograph",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hold",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "family",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "him",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "titles",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "adoption",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "name",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "nickname",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "show",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "sit",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "interact",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "guest",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "partner",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "apprentice",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "service",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "sub",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "picked",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mri",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "deposit",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hug",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "store",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "feeder",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "scratch",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cuddle",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "felid hybrid",
+        "from": "wiki",
+        "score": 0.003225806451612856
+    },
+    {
+        "word": "seasonal",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "someone",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "vitality",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "warlock",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "deposits",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "persons",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "bowl",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "member",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "profit",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "friendly",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "poultry",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "enhancement",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "need",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "security",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "gardening",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "order",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "blade",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "squeeze",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "long",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "effect",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "litter",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "attention",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "utilities",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "skilling",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "new",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "vehicle",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "touch",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "talk",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "tss",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "snuggle",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "immunity",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "touched",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "call",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "free",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "fund",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "captive",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "people",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "chores",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "groceries",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hotels",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "comics",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "guardian",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "purple",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "predatory",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "med",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "tummy",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "acid",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "trailed",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "smoke",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "attack",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "shelter",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "preferences",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "target",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "whatever",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "side",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "distract",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "girly",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "landlord",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "auto",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "street",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "living",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "section",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "object",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "tome",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "taste",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "produce",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "log",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "status",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "token",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "bow",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "scenery",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "salon",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "monster",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "performance",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "fun",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "orphan",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "with",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "entertainment",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "clothes",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "lab",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "naturalist",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cigarette",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "stroller",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "expenses",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "idiot",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "son",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "boarding",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "parent",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hobby",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hunter",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "barn",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "guests",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mend",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "rare",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "aquatic",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "amulet",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "plant",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "tenants",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "approach",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "brush",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "meet",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "control",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "kiss",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "boarded",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "held",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "companions",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "pony",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "trinket",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hasta",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "found",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hardware",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hair",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "dust",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "other",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "castle",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "performing",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "items",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "scratched",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "rub",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "spect",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "district",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "walker",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "reassure",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "physical",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "zoo",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "achievements",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cuddled",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "follower",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "health",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "costume",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "bourgeoisie",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "pedigree",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "marmoset",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "chimpanzees",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "anthropomorphism",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "adaptation",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "captivity",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "north america",
+        "from": "swiki",
+        "score": 0
+    },
+    {
+        "word": "hamsters",
+        "from": "swiki",
+        "score": 0
+    },
+    {
+        "word": "animal protectionism",
+        "from": "wiki",
+        "score": -0.04193548387096774
+    },
+    {
+        "word": "political correctness",
+        "from": "wiki",
+        "score": -0.04838709677419356
+    },
+    {
+        "word": "non-human animals",
+        "from": "wiki",
+        "score": -0.05483870967741933
+    },
+    {
+        "word": "pet adoption",
+        "from": "wiki",
+        "score": -0.0741935483870968
+    },
+    {
+        "word": "legal custody",
+        "from": "wiki",
+        "score": -0.08064516129032256
+    },
+    {
+        "word": "petco",
+        "score": -0.092,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "petpet",
+        "score": -0.094,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "petcos",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "tuzzy",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "petg",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "aww",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "geeky",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "housesit",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "plushie",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cutesy",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "gitm",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "kedvenc",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hyraxes",
+        "from": "wiki",
+        "score": -0.1
+    },
+    {
+        "word": "maladaptive",
+        "from": "wiki",
+        "score": -0.1
+    },
+    {
+        "word": "tonda",
+        "from": "wiki",
+        "score": -0.1
+    },
+    {
+        "word": "personal injury",
+        "from": "wiki",
+        "score": -0.1064516129032258
+    },
+    {
+        "word": "property damage",
+        "from": "wiki",
+        "score": -0.11290322580645162
+    },
+    {
+        "word": "ministry of economic affairs and climate policy",
+        "from": "wiki",
+        "score": -0.14516129032258063
+    },
+    {
+        "word": "animal husbandry",
+        "from": "wiki",
+        "score": -0.15161290322580645
+    },
+    {
+        "word": "wageningen university",
+        "from": "wiki",
+        "score": -0.15806451612903227
+    },
+    {
+        "word": "brown bear",
+        "from": "wiki",
+        "score": -0.16451612903225804
+    },
+    {
+        "word": "european hare",
+        "from": "wiki",
+        "score": -0.19032258064516128
+    },
+    {
+        "word": "wild boar",
+        "from": "wiki",
+        "score": -0.1967741935483871
+    },
+    {
+        "word": "environmental impact of meat production",
+        "from": "wiki",
+        "score": -0.20322580645161292
+    },
+    {
+        "word": "greenhouse gas",
+        "from": "wiki",
+        "score": -0.2096774193548387
+    },
+    {
+        "word": "pet rock",
+        "from": "wiki",
+        "score": -0.2290322580645161
+    },
+    {
+        "word": "chia pet",
+        "from": "wiki",
+        "score": -0.23548387096774193
+    },
+    {
+        "word": "selective breeding",
+        "from": "wiki",
+        "score": -0.24838709677419357
+    },
+    {
+        "word": "tame animal",
+        "from": "wiki",
+        "score": -0.2548387096774194
+    },
+    {
+        "word": "animal cruelty",
+        "from": "wiki",
+        "score": -0.26774193548387093
+    },
+    {
+        "word": "ancient greeks",
+        "from": "wiki",
+        "score": -0.27419354838709675
+    },
+    {
+        "word": "ancient rome",
+        "from": "wiki",
+        "score": -0.2806451612903226
+    },
+    {
+        "word": "ancient egypt",
+        "from": "wiki",
+        "score": -0.2870967741935484
+    },
+    {
+        "word": "kingdom of great britain",
+        "from": "wiki",
+        "score": -0.2935483870967742
+    },
+    {
+        "word": "victorian era",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "animal fancy",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "conformation show",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "kennel club",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "stud book",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "capuchin monkeys",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "new world monkey",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "years before present",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "directional selection",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "biological pest control",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "theory of mind",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "koko the gorilla",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "jean-honoré fragonard",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "édouard manet",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "sir henry raeburn",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "james tissot",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "william f. cody",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "syrian hamster",
+        "from": "swiki",
+        "score": -0.3
+    },
+    {
+        "word": "dwarf hamster",
+        "from": "swiki",
+        "score": -0.3
     }
-    return a;
-}
+]
+const sportsWords = [
+    {
+        "word": "racing",
+        "score": 19.66404296877454,
+        "from": "ol,w2v,wiki,swiki,wn,reddit-slashes"
+    },
+    {
+        "word": "competition",
+        "score": 13.86042895044941,
+        "from": "w2v,wiki,swiki,reddit-slashes"
+    },
+    {
+        "word": "athletics",
+        "score": 13.774887275968789,
+        "from": "ol,w2v,wiki,wn"
+    },
+    {
+        "word": "spectator sport",
+        "score": 11.37890769230769,
+        "from": "ol,wiki,wn"
+    },
+    {
+        "word": "game",
+        "score": 8.128060200668896,
+        "from": "ol,wiki,swiki,reddit-slashes"
+    },
+    {
+        "word": "gymnastics",
+        "score": 8.08030304773985,
+        "from": "ol,w2v,wiki,wn"
+    },
+    {
+        "word": "basketball",
+        "score": 6.923185617599258,
+        "from": "ol,w2v,swiki,reddit-slashes"
+    },
+    {
+        "word": "team",
+        "score": 6.91899115266114,
+        "from": "w2v,wiki,swiki,reddit-slashes"
+    },
+    {
+        "word": "sportsman",
+        "score": 6.036268752858079,
+        "from": "ol,w2v,wn"
+    },
+    {
+        "word": "cycling",
+        "score": 5.532263906680807,
+        "from": "w2v,wiki,wn"
+    },
+    {
+        "word": "fun",
+        "score": 5.1342,
+        "from": "ol,wn,reddit-slashes"
+    },
+    {
+        "word": "skating",
+        "score": 4.948079321953215,
+        "from": "ol,w2v,wn"
+    },
+    {
+        "word": "tennis",
+        "score": 4.286410403703442,
+        "from": "ol,w2v,wiki"
+    },
+    {
+        "word": "soccer",
+        "score": 3.820232356686682,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "leisure",
+        "score": 3.817747826086957,
+        "from": "ol,wiki,reddit-slashes"
+    },
+    {
+        "word": "football",
+        "score": 3.6659150618137986,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "athletic",
+        "score": 3.4838849259728217,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "games",
+        "score": 3.3345487772920324,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "baseball",
+        "score": 3.092509971598632,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "sportswoman",
+        "score": 3.088123076923077,
+        "from": "ol,wn"
+    },
+    {
+        "word": "position",
+        "from": "swiki,wn,reddit-slashes",
+        "score": 3.023076923076923
+    },
+    {
+        "word": "play",
+        "score": 3.002076923076923,
+        "from": "ol,wn"
+    },
+    {
+        "word": "disport",
+        "score": 2.9659384615384616,
+        "from": "ol,wn"
+    },
+    {
+        "word": "lark",
+        "score": 2.9628,
+        "from": "ol,wn"
+    },
+    {
+        "word": "boast",
+        "score": 2.9414153846153845,
+        "from": "ol,wn"
+    },
+    {
+        "word": "mutation",
+        "score": 2.932892307692308,
+        "from": "ol,wn"
+    },
+    {
+        "word": "frolic",
+        "score": 2.928876923076923,
+        "from": "ol,wn"
+    },
+    {
+        "word": "skylark",
+        "score": 2.9267538461538463,
+        "from": "ol,wn"
+    },
+    {
+        "word": "romp",
+        "score": 2.9216307692307693,
+        "from": "ol,wn"
+    },
+    {
+        "word": "gambol",
+        "score": 2.9204923076923075,
+        "from": "ol,wn"
+    },
+    {
+        "word": "mutant",
+        "score": 2.9170615384615384,
+        "from": "ol,wn"
+    },
+    {
+        "word": "feature",
+        "score": 2.9100153846153844,
+        "from": "ol,wn"
+    },
+    {
+        "word": "association football",
+        "from": "wiki",
+        "score": 2.9
+    },
+    {
+        "word": "rugby union",
+        "from": "wiki",
+        "score": 2.9
+    },
+    {
+        "word": "frisk",
+        "score": 2.8893692307692307,
+        "from": "ol,wn"
+    },
+    {
+        "word": "cavort",
+        "score": 2.835353846153846,
+        "from": "ol,wn"
+    },
+    {
+        "word": "rollick",
+        "score": 2.833707692307692,
+        "from": "ol,wn"
+    },
+    {
+        "word": "offside",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "call",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "referee",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "kill",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "spar",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "run",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "downfield",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "lark about",
+        "score": 2.5893846153846156,
+        "from": "ol,wn"
+    },
+    {
+        "word": "run around",
+        "score": 2.5893846153846156,
+        "from": "ol,wn"
+    },
+    {
+        "word": "olympic games",
+        "from": "wiki",
+        "score": 2.5
+    },
+    {
+        "word": "council of europe",
+        "from": "wiki",
+        "score": 2.5
+    },
+    {
+        "word": "champion",
+        "score": 2.4515819397993313,
+        "from": "ol,wiki"
+    },
+    {
+        "word": "skiing",
+        "score": 2.37185554998345,
+        "from": "w2v,wn"
+    },
+    {
+        "word": "riding",
+        "score": 2.351812887652766,
+        "from": "w2v,wn"
+    },
+    {
+        "word": "ski",
+        "score": 2.3053698883837743,
+        "from": "w2v,wn"
+    },
+    {
+        "word": "rowing",
+        "score": 2.2587633341708857,
+        "from": "w2v,wn"
+    },
+    {
+        "word": "netball",
+        "score": 2.231892307692308,
+        "from": "ol,swiki"
+    },
+    {
+        "word": "diversion",
+        "score": 2.212076923076923,
+        "from": "ol,wn"
+    },
+    {
+        "word": "coach",
+        "from": "swiki,wn",
+        "score": 2.0769230769230766
+    },
+    {
+        "word": "athlete",
+        "score": 2.039883246786517,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "hockey",
+        "score": 1.9981457952652413,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "athletes",
+        "score": 1.9885977975177391,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "entertainment",
+        "from": "wiki,reddit-slashes",
+        "score": 1.9673913043478262
+    },
+    {
+        "word": "olympic",
+        "score": 1.939573693883594,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "coaches",
+        "score": 1.9391153252921645,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "polo",
+        "score": 1.8865742797549678,
+        "from": "w2v,wiki"
+    },
+    {
+        "word": "outdoor sport",
+        "score": 1.885723076923077,
+        "from": "ol,wn"
+    },
+    {
+        "word": "team sport",
+        "score": 1.8857076923076923,
+        "from": "ol,wn"
+    },
+    {
+        "word": "professional football",
+        "score": 1.8856923076923076,
+        "from": "ol,wn"
+    },
+    {
+        "word": "business",
+        "score": 1.7999999999999998,
+        "from": "wn,reddit-slashes"
+    },
+    {
+        "word": "job",
+        "score": 1.7999999999999998,
+        "from": "wn,reddit-slashes"
+    },
+    {
+        "word": "lead",
+        "score": 1.7999999999999998,
+        "from": "wn,reddit-slashes"
+    },
+    {
+        "word": "playing",
+        "score": 1.7915199727048803,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "golf",
+        "score": 1.7542244358761092,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "television",
+        "from": "wiki,swiki",
+        "score": 1.7356521739130435
+    },
+    {
+        "word": "rugby",
+        "score": 1.6992189719680186,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "chess",
+        "from": "wiki",
+        "score": 1.685217391304348
+    },
+    {
+        "word": "running",
+        "from": "wiki,reddit-slashes",
+        "score": 1.652173913043478
+    },
+    {
+        "word": "go",
+        "from": "wiki",
+        "score": 1.6330434782608694
+    },
+    {
+        "word": "sportsperson",
+        "score": 1.6166923076923077,
+        "from": "ol,swiki"
+    },
+    {
+        "word": "sports",
+        "score": 1.5904779633387145,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "sportaccord",
+        "from": "wiki",
+        "score": 1.5591304347826085
+    },
+    {
+        "word": "competitive",
+        "score": 1.4245513688727423,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "club",
+        "score": 1.4088320478718397,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "race",
+        "score": 1.355458088907628,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "gym",
+        "score": 1.3428923076923076,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "youth",
+        "score": 1.3253189110192989,
+        "from": "w2v,wiki"
+    },
+    {
+        "word": "challenge",
+        "score": 1.3157805854193902,
+        "from": "w2v,wiki"
+    },
+    {
+        "word": "teams",
+        "score": 1.3144260799405227,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "track",
+        "score": 1.3131197336641542,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "super",
+        "score": 1.2982337419415457,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "pleasure",
+        "score": 1.2936307692307691,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "class",
+        "score": 1.2845521212323363,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "event",
+        "score": 1.280215940243529,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "exercise",
+        "score": 1.2682153846153845,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "venue",
+        "score": 1.264870709701093,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "activity",
+        "score": 1.2596769230769231,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "standards",
+        "score": 1.2588381911703308,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "fitness",
+        "score": 1.2529436153997078,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "son",
+        "score": 1.2360923076923078,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "variation",
+        "score": 0.88,
+        "from": "wn"
+    },
+    {
+        "word": "summercater",
+        "score": 0.78,
+        "from": "wn"
+    },
+    {
+        "word": "tournament",
+        "from": "wiki",
+        "score": 0.7619565217391304
+    },
+    {
+        "word": "playoffs",
+        "from": "wiki",
+        "score": 0.7402173913043477
+    },
+    {
+        "word": "athleticism",
+        "from": "wiki",
+        "score": 0.7347826086956522
+    },
+    {
+        "word": "dexterity",
+        "from": "wiki",
+        "score": 0.7293478260869566
+    },
+    {
+        "word": "sumo",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "line",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "occupation",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "wipeout",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "flip",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "pass",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "toss",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "recreation",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "aquatics",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "row",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "archery",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "sledding",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "equitation",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "shot",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "stroke",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "foul",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "possession",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "judo",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "save",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "tuck",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "english",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "side",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "series",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "trial",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "defence",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "defense",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "handler",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "manager",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "ironman",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "ref",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "scout",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "shooter",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "timekeeper",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "timer",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "deficit",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "average",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "bout",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "round",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "turn",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "surge",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "seed",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "curl",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "start",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "field",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "shoot",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "umpire",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "drop",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "down",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "bandy",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "submarine",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "kick",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "punt",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "drive",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "racket",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "carry",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "dribble",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "cut",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "box",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "hike",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "mountaineer",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "rappel",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "backpack",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "pack",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "jog",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "skate",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "skateboard",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "sled",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "sleigh",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "bob",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "bobsled",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "luge",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "toboggan",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "scull",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "canoe",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "kayak",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "paddle",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "surf",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "surfboard",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "jackknife",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "snorkel",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "hurdle",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "loose",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "legal",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "disqualified",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "home",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "away",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "ineligible",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "defending",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "onside",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "underarm",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "underhand",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "underhanded",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "overhand",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "upfield",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "humor",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "humour",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "wit",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "witticism",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "jocularity",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "clowning",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "comedy",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "draughts",
+        "from": "wiki",
+        "score": 0.6858695652173914
+    },
+    {
+        "word": "tradition",
+        "from": "wiki",
+        "score": 0.6641304347826087
+    },
+    {
+        "word": "goal",
+        "from": "wiki",
+        "score": 0.6586956521739131
+    },
+    {
+        "word": "funambulism",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "birling",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "logrolling",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "outclass",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "double-team",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "prizefight",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "shadowbox",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "abseil",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "spread-eagle",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "rollerblade",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "schuss",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "windsurf",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "skin-dive",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "man-to-man",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "one-on-one",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "most-valuable",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "offsides",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "overarm",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "overhanded",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "wittiness",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "jocosity",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "waggery",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "waggishness",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "xiangqi",
+        "from": "wiki",
+        "score": 0.5750000000000001
+    },
+    {
+        "word": "physical fitness",
+        "from": "wiki",
+        "score": 0.537391304347826
+    },
+    {
+        "word": "sporting",
+        "score": 0.5328979914924518,
+        "from": "w2v"
+    },
+    {
+        "word": "professional",
+        "score": 0.5232640172517986,
+        "from": "w2v"
+    },
+    {
+        "word": "sportsmen",
+        "score": 0.5150230769230769,
+        "from": "ol"
+    },
+    {
+        "word": "sportsmanship",
+        "score": 0.5091230769230769,
+        "from": "ol"
+    },
+    {
+        "word": "badminton",
+        "score": 0.5034307692307692,
+        "from": "ol"
+    },
+    {
+        "word": "competing",
+        "score": 0.5018006993950097,
+        "from": "w2v"
+    },
+    {
+        "word": "olympics",
+        "score": 0.500941651421435,
+        "from": "w2v"
+    },
+    {
+        "word": "world",
+        "score": 0.5004446503757282,
+        "from": "w2v"
+    },
+    {
+        "word": "recreational",
+        "score": 0.4965769230769231,
+        "from": "ol"
+    },
+    {
+        "word": "volleyball",
+        "score": 0.49637119926523104,
+        "from": "w2v"
+    },
+    {
+        "word": "physical activity",
+        "from": "wiki",
+        "score": 0.49456521739130427
+    },
+    {
+        "word": "compete",
+        "score": 0.49254229286020074,
+        "from": "w2v"
+    },
+    {
+        "word": "competes",
+        "score": 0.4907353340830495,
+        "from": "w2v"
+    },
+    {
+        "word": "competitions",
+        "score": 0.4903444018031923,
+        "from": "w2v"
+    },
+    {
+        "word": "nonresident",
+        "score": 0.4883153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "taekwondo",
+        "score": 0.4881615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "doping",
+        "score": 0.48746923076923077,
+        "from": "ol"
+    },
+    {
+        "word": "clubs",
+        "score": 0.4850664690383161,
+        "from": "w2v"
+    },
+    {
+        "word": "bobsleigh",
+        "score": 0.48478461538461537,
+        "from": "ol"
+    },
+    {
+        "word": "diving",
+        "from": "wiki",
+        "score": 0.4847826086956522
+    },
+    {
+        "word": "formula",
+        "score": 0.48434399118607047,
+        "from": "w2v"
+    },
+    {
+        "word": "racer",
+        "score": 0.4820909831598544,
+        "from": "w2v"
+    },
+    {
+        "word": "player",
+        "score": 0.47781538461538464,
+        "from": "ol"
+    },
+    {
+        "word": "sportive",
+        "score": 0.47736153846153845,
+        "from": "ol"
+    },
+    {
+        "word": "equestrianism",
+        "from": "wiki",
+        "score": 0.47717391304347834
+    },
+    {
+        "word": "curling",
+        "score": 0.4747153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "pharaoh",
+        "from": "wiki",
+        "score": 0.47391304347826085
+    },
+    {
+        "word": "bike",
+        "score": 0.47241285132980576,
+        "from": "w2v"
+    },
+    {
+        "word": "discipline",
+        "score": 0.4724,
+        "from": "ol"
+    },
+    {
+        "word": "sportswear",
+        "score": 0.47205384615384616,
+        "from": "ol"
+    },
+    {
+        "word": "sporty",
+        "score": 0.4719615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "swimming",
+        "score": 0.47121773413176293,
+        "from": "w2v"
+    },
+    {
+        "word": "jock",
+        "score": 0.46815384615384614,
+        "from": "ol"
+    },
+    {
+        "word": "tie-breaking methods",
+        "from": "wiki",
+        "score": 0.467391304347826
+    },
+    {
+        "word": "bicycle",
+        "score": 0.4662019808578751,
+        "from": "w2v"
+    },
+    {
+        "word": "championship",
+        "score": 0.46608839578415245,
+        "from": "w2v"
+    },
+    {
+        "word": "enthusiast",
+        "score": 0.4660153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "motorcycle",
+        "score": 0.46530310778885825,
+        "from": "w2v"
+    },
+    {
+        "word": "brand",
+        "score": 0.46429912394040407,
+        "from": "w2v"
+    },
+    {
+        "word": "adventure",
+        "score": 0.4634153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "nascar",
+        "score": 0.4611746829840255,
+        "from": "w2v"
+    },
+    {
+        "word": "federation",
+        "score": 0.46086498207215665,
+        "from": "w2v"
+    },
+    {
+        "word": "model",
+        "score": 0.4597766518692922,
+        "from": "w2v"
+    },
+    {
+        "word": "champ",
+        "score": 0.45926923076923076,
+        "from": "ol"
+    },
+    {
+        "word": "ever",
+        "score": 0.4587031356724077,
+        "from": "w2v"
+    },
+    {
+        "word": "f1",
+        "score": 0.4578368068216135,
+        "from": "w2v"
+    },
+    {
+        "word": "uci",
+        "score": 0.45773327712543654,
+        "from": "w2v"
+    },
+    {
+        "word": "wrestling",
+        "score": 0.45501758413125115,
+        "from": "w2v"
+    },
+    {
+        "word": "competitor",
+        "score": 0.4524860097979197,
+        "from": "w2v"
+    },
+    {
+        "word": "riders",
+        "score": 0.45238888394728294,
+        "from": "w2v"
+    },
+    {
+        "word": "sports league",
+        "from": "wiki",
+        "score": 0.4510869565217391
+    },
+    {
+        "word": "enthusiasts",
+        "score": 0.45046998683210276,
+        "from": "w2v"
+    },
+    {
+        "word": "popular",
+        "score": 0.44917175238479656,
+        "from": "w2v"
+    },
+    {
+        "word": "championships",
+        "score": 0.44772124523990053,
+        "from": "w2v"
+    },
+    {
+        "word": "jousting",
+        "from": "wiki",
+        "score": 0.4467391304347826
+    },
+    {
+        "word": "sports season",
+        "from": "wiki",
+        "score": 0.4456521739130435
+    },
+    {
+        "word": "gambler",
+        "score": 0.44545384615384614,
+        "from": "ol"
+    },
+    {
+        "word": "physical",
+        "score": 0.4451769230769231,
+        "from": "ol"
+    },
+    {
+        "word": "powerboating",
+        "from": "wiki",
+        "score": 0.4445652173913043
+    },
+    {
+        "word": "racers",
+        "score": 0.44267484667023765,
+        "from": "w2v"
+    },
+    {
+        "word": "wear",
+        "score": 0.4412153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "sponsorship",
+        "score": 0.4408803586297479,
+        "from": "w2v"
+    },
+    {
+        "word": "ballgame",
+        "score": 0.43984615384615383,
+        "from": "ol"
+    },
+    {
+        "word": "friendly",
+        "score": 0.43950896915744386,
+        "from": "w2v"
+    },
+    {
+        "word": "softball",
+        "score": 0.4393288305212636,
+        "from": "w2v"
+    },
+    {
+        "word": "models",
+        "score": 0.4384142868410295,
+        "from": "w2v"
+    },
+    {
+        "word": "driving",
+        "score": 0.4365516570251411,
+        "from": "w2v"
+    },
+    {
+        "word": "best",
+        "score": 0.436214044891015,
+        "from": "w2v"
+    },
+    {
+        "word": "movement",
+        "score": 0.4360538461538462,
+        "from": "ol"
+    },
+    {
+        "word": "treadmill",
+        "score": 0.43583076923076924,
+        "from": "ol"
+    },
+    {
+        "word": "women",
+        "score": 0.4343001764180498,
+        "from": "w2v"
+    },
+    {
+        "word": "amateur",
+        "score": 0.43422374725920126,
+        "from": "w2v"
+    },
+    {
+        "word": "good",
+        "score": 0.43332172139100283,
+        "from": "w2v"
+    },
+    {
+        "word": "association",
+        "score": 0.43329869940434484,
+        "from": "w2v"
+    },
+    {
+        "word": "experience",
+        "score": 0.4328174875217168,
+        "from": "w2v"
+    },
+    {
+        "word": "car",
+        "score": 0.4325472770884039,
+        "from": "w2v"
+    },
+    {
+        "word": "players",
+        "score": 0.43177588524719435,
+        "from": "w2v"
+    },
+    {
+        "word": "well",
+        "score": 0.4316525801478206,
+        "from": "w2v"
+    },
+    {
+        "word": "roller",
+        "score": 0.43133770996744364,
+        "from": "w2v"
+    },
+    {
+        "word": "for",
+        "score": 0.4307260722698338,
+        "from": "w2v"
+    },
+    {
+        "word": "fia",
+        "score": 0.4305798851203123,
+        "from": "w2v"
+    },
+    {
+        "word": "peloponnese",
+        "from": "wiki",
+        "score": 0.43043478260869567
+    },
+    {
+        "word": "mockery",
+        "score": 0.4302615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "motocross",
+        "score": 0.43021785667019613,
+        "from": "w2v"
+    },
+    {
+        "word": "competed",
+        "score": 0.42991728486785474,
+        "from": "w2v"
+    },
+    {
+        "word": "fit",
+        "score": 0.42983378472504,
+        "from": "w2v"
+    },
+    {
+        "word": "leagues",
+        "score": 0.4288159262011839,
+        "from": "w2v"
+    },
+    {
+        "word": "drivers",
+        "score": 0.42790398867772356,
+        "from": "w2v"
+    },
+    {
+        "word": "european",
+        "score": 0.4275871077079694,
+        "from": "w2v"
+    },
+    {
+        "word": "national",
+        "score": 0.4271785347019175,
+        "from": "w2v"
+    },
+    {
+        "word": "tour",
+        "score": 0.42663567991260426,
+        "from": "w2v"
+    },
+    {
+        "word": "cars",
+        "score": 0.42644972894237115,
+        "from": "w2v"
+    },
+    {
+        "word": "mate",
+        "score": 0.4259846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "boy",
+        "score": 0.42417692307692306,
+        "from": "ol"
+    },
+    {
+        "word": "esports",
+        "from": "wiki",
+        "score": 0.4228260869565218
+    },
+    {
+        "word": "campaign",
+        "score": 0.4222692307692308,
+        "from": "ol"
+    },
+    {
+        "word": "buddy",
+        "score": 0.42093846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "movements",
+        "score": 0.41825384615384614,
+        "from": "ol"
+    },
+    {
+        "word": "jeux",
+        "score": 0.4144076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "multisport",
+        "score": 0.41365384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "mind sport",
+        "from": "wiki",
+        "score": 0.41304347826086946
+    },
+    {
+        "word": "suv",
+        "score": 0.4119923076923077,
+        "from": "ol"
+    },
+    {
+        "word": "yuk",
+        "score": 0.4089153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "transgender",
+        "from": "wiki",
+        "score": 0.40869565217391307
+    },
+    {
+        "word": "association of ioc recognised international sports federations",
+        "from": "wiki",
+        "score": 0.4076086956521739
+    },
+    {
+        "word": "hong",
+        "score": 0.4054076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "professional boxing",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "professional wrestling",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "professional golf",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "professional baseball",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "professional basketball",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "professional tennis",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "line of work",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "daisy cutter",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "tightrope walking",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "rock climbing",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "contact sport",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "field sport",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "gymnastic exercise",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "track and field",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "water sport",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "horseback riding",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "blood sport",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "athletic game",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "personal foul",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "press box",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "game plan",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "won-lost record",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "defending team",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "bench warmer",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "free agent",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "iron man",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "talent scout",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "free agency",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "regulation time",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "sudden death",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "follow through",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "rope down",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "ice skate",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "figure skate",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "roller skate",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "speed skate",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "water ski",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "ski jump",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "ride the bench",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "warm the bench",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "sit out",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "out of play",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "at home",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "pal",
+        "score": 0.3999076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "contract bridge",
+        "from": "wiki",
+        "score": 0.39673913043478254
+    },
+    {
+        "word": "willy",
+        "score": 0.3963615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "kang",
+        "score": 0.39303076923076924,
+        "from": "ol"
+    },
+    {
+        "word": "sportif",
+        "score": 0.39303076923076924,
+        "from": "ol"
+    },
+    {
+        "word": "suvs",
+        "score": 0.39303076923076924,
+        "from": "ol"
+    },
+    {
+        "word": "triathlon",
+        "score": 0.3929076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "korfball",
+        "score": 0.3929,
+        "from": "ol"
+    },
+    {
+        "word": "lacrosse",
+        "score": 0.39287692307692307,
+        "from": "ol"
+    },
+    {
+        "word": "sportswomen",
+        "score": 0.39228461538461534,
+        "from": "ol"
+    },
+    {
+        "word": "gambling",
+        "from": "wiki",
+        "score": 0.3869565217391305
+    },
+    {
+        "word": "sportfishing",
+        "score": 0.376676923076923,
+        "from": "ol"
+    },
+    {
+        "word": "regulation of sport",
+        "from": "wiki",
+        "score": 0.36956521739130427
+    },
+    {
+        "word": "rioting",
+        "from": "wiki",
+        "score": 0.36521739130434777
+    },
+    {
+        "word": "hooliganism",
+        "from": "wiki",
+        "score": 0.3597826086956522
+    },
+    {
+        "word": "zourkhaneh",
+        "from": "wiki",
+        "score": 0.3576086956521739
+    },
+    {
+        "word": "sports journalism",
+        "from": "wiki",
+        "score": 0.35326086956521735
+    },
+    {
+        "word": "sport venue",
+        "from": "wiki",
+        "score": 0.342391304347826
+    },
+    {
+        "word": "broadcasting of sports events",
+        "from": "wiki",
+        "score": 0.33695652173913043
+    },
+    {
+        "word": "cross-country",
+        "score": 0.33363171990006624,
+        "from": "w2v"
+    },
+    {
+        "word": "education",
+        "from": "wiki",
+        "score": 0.33260869565217394
+    },
+    {
+        "word": "sport betting",
+        "from": "wiki",
+        "score": 0.33152173913043487
+    },
+    {
+        "word": "old french",
+        "from": "wiki",
+        "score": 0.3152173913043477
+    },
+    {
+        "word": "concussion",
+        "from": "wiki",
+        "score": 0.31086956521739134
+    },
+    {
+        "word": "disability",
+        "from": "wiki",
+        "score": 0.30543478260869567
+    },
+    {
+        "word": "sportspeople",
+        "score": 0.2930307692307692,
+        "from": "ol"
+    },
+    {
+        "word": "sportling",
+        "score": 0.2928384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "internet",
+        "from": "wiki",
+        "score": 0.2728260869565217
+    },
+    {
+        "word": "formula 1",
+        "from": "wiki",
+        "score": 0.25000000000000006
+    },
+    {
+        "word": "cue sports",
+        "from": "wiki",
+        "score": 0.2391304347826087
+    },
+    {
+        "word": "equestrian sport",
+        "from": "wiki",
+        "score": 0.23369565217391314
+    },
+    {
+        "word": "video game",
+        "from": "wiki",
+        "score": 0.22826086956521735
+    },
+    {
+        "word": "wage",
+        "from": "wiki",
+        "score": 0.21847826086956523
+    },
+    {
+        "word": "salary",
+        "from": "wiki",
+        "score": 0.21304347826086956
+    },
+    {
+        "word": "professional sports",
+        "from": "wiki",
+        "score": 0.20652173913043487
+    },
+    {
+        "word": "sports day",
+        "from": "wiki",
+        "score": 0.19565217391304346
+    },
+    {
+        "word": "boxing",
+        "from": "wiki",
+        "score": 0.18586956521739129
+    },
+    {
+        "word": "indoors",
+        "from": "swiki",
+        "score": 0.18461538461538463
+    },
+    {
+        "word": "sport in china",
+        "from": "wiki",
+        "score": 0.17934782608695654
+    },
+    {
+        "word": "ancient egypt",
+        "from": "wiki",
+        "score": 0.1684782608695652
+    },
+    {
+        "word": "pay-per-view",
+        "from": "wiki",
+        "score": 0.1673913043478261
+    },
+    {
+        "word": "ancient persia",
+        "from": "wiki",
+        "score": 0.1630434782608695
+    },
+    {
+        "word": "fina",
+        "from": "wiki",
+        "score": 0.1532608695652174
+    },
+    {
+        "word": "ancient greece",
+        "from": "wiki",
+        "score": 0.14130434782608692
+    },
+    {
+        "word": "safari",
+        "score": 0.126,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "olympia, greece",
+        "from": "wiki",
+        "score": 0.125
+    },
+    {
+        "word": "leisure time",
+        "from": "wiki",
+        "score": 0.11956521739130432
+    },
+    {
+        "word": "bundesliga",
+        "from": "wiki",
+        "score": 0.11521739130434783
+    },
+    {
+        "word": "mass media",
+        "from": "wiki",
+        "score": 0.11413043478260865
+    },
+    {
+        "word": "nfl",
+        "from": "wiki",
+        "score": 0.10434782608695653
+    },
+    {
+        "word": "gender identity",
+        "from": "wiki",
+        "score": 0.1032608695652174
+    },
+    {
+        "word": "grantland rice",
+        "from": "wiki",
+        "score": 0.09782608695652173
+    },
+    {
+        "word": "pierre de coubertin",
+        "from": "wiki",
+        "score": 0.09239130434782605
+    },
+    {
+        "word": "match fixing",
+        "from": "wiki",
+        "score": 0.08152173913043481
+    },
+    {
+        "word": "blood doping",
+        "from": "wiki",
+        "score": 0.07608695652173914
+    },
+    {
+        "word": "violence in sports",
+        "from": "wiki",
+        "score": 0.07065217391304346
+    },
+    {
+        "word": "child development",
+        "from": "wiki",
+        "score": 0.05434782608695654
+    },
+    {
+        "word": "hobby",
+        "score": 0.048,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "skill",
+        "from": "wiki",
+        "score": 0.04456521739130434
+    },
+    {
+        "word": "crime",
+        "from": "wiki",
+        "score": 0.03913043478260869
+    },
+    {
+        "word": "athletic scholarship",
+        "from": "wiki",
+        "score": 0.03804347826086951
+    },
+    {
+        "word": "fanatic",
+        "from": "swiki",
+        "score": 0.03076923076923077
+    },
+    {
+        "word": "radicalization",
+        "from": "wiki",
+        "score": 0.028260869565217367
+    },
+    {
+        "word": "war on drugs",
+        "from": "wiki",
+        "score": 0.02717391304347827
+    },
+    {
+        "word": "participation inequality",
+        "from": "wiki",
+        "score": 0.021739130434782594
+    },
+    {
+        "word": "illegal drug trade",
+        "from": "wiki",
+        "score": 0.016304347826086918
+    },
+    {
+        "word": "league",
+        "score": 0.01,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "martial",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "muscle",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "work",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "luxury",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "pro",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "touring",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "economy",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "art",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "dress",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "jack",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "party",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "company",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "naked",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "trad",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "show",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "food",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "dive",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "advanced",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "blazers",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "level",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "trophy",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "quiet",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "have",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "training",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "breed",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "marauder",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "city",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "parade",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "tool",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "looking",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "suit",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cardio",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "plastic",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "contenders",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "practice",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hunting",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "concert",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "stunt",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "group",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "lesson",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "workout",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cheater",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "spring",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "health",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "air",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "motor",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "dancing",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "slot",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "nice",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "reality",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "love",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mma",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "binder",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "tactical",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "utility",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "exp",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mountaineering",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "flaunt",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "fans",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "blazer",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hobbies",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "actor",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "dart",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "out",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "straw",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "comfort",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mansions",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "glide",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "setting",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "profession",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "social",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "royal",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "casual",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "ritual",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "inspirational",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "movie",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "join",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "natural",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "intelligent",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "exercises",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "competitors",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "music",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "surfer",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "school",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "moon",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "fighting",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "gun",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "sls",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "trail",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "profile",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "manual",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "eco",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "street",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "enduro",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "physical disability",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "berlin",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "apartheid",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "hurling",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "nationalism",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "zeus",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "idolatry",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "tertullian",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "fandom",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "stadium",
+        "from": "swiki",
+        "score": 0
+    },
+    {
+        "word": "intellectual disabilities",
+        "from": "wiki",
+        "score": -0.005434782608695676
+    },
+    {
+        "word": "radio broadcasting",
+        "from": "wiki",
+        "score": -0.016304347826086973
+    },
+    {
+        "word": "hawk-eye",
+        "from": "wiki",
+        "score": -0.03369565217391304
+    },
+    {
+        "word": "fifa world cup",
+        "from": "wiki",
+        "score": -0.03804347826086957
+    },
+    {
+        "word": "snickometer",
+        "from": "wiki",
+        "score": -0.04456521739130434
+    },
+    {
+        "word": "2006 fifa world cup",
+        "from": "wiki",
+        "score": -0.048913043478260865
+    },
+    {
+        "word": "fifa world cup finals",
+        "from": "wiki",
+        "score": -0.05434782608695654
+    },
+    {
+        "word": "2011 cricket world cup final",
+        "from": "wiki",
+        "score": -0.05978260869565216
+    },
+    {
+        "word": "national football league",
+        "from": "wiki",
+        "score": -0.06521739130434784
+    },
+    {
+        "word": "super bowl",
+        "from": "wiki",
+        "score": -0.07065217391304346
+    },
+    {
+        "word": "self-esteem",
+        "from": "wiki",
+        "score": -0.07717391304347829
+    },
+    {
+        "word": "professional sport",
+        "from": "wiki",
+        "score": -0.09782608695652173
+    },
+    {
+        "word": "bralette",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "iracing",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "streetwear",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "intramurals",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "esport",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "shounen",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mathe",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "crossfit",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "reli",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "liftback",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "activ",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "smartwatch",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "tevas",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "garmisch-partenkirchen",
+        "from": "wiki",
+        "score": -0.1
+    },
+    {
+        "word": "untermensch",
+        "from": "wiki",
+        "score": -0.1
+    },
+    {
+        "word": "amateur sport",
+        "from": "wiki",
+        "score": -0.1032608695652174
+    },
+    {
+        "word": "sports science",
+        "from": "wiki",
+        "score": -0.11956521739130432
+    },
+    {
+        "word": "running shoe",
+        "from": "wiki",
+        "score": -0.125
+    },
+    {
+        "word": "competitive swimwear",
+        "from": "wiki",
+        "score": -0.13043478260869568
+    },
+    {
+        "word": "sports engineering",
+        "from": "wiki",
+        "score": -0.1358695652173913
+    },
+    {
+        "word": "wearable technology",
+        "from": "wiki",
+        "score": -0.14130434782608697
+    },
+    {
+        "word": "goal-line technology",
+        "from": "wiki",
+        "score": -0.1576086956521739
+    },
+    {
+        "word": "2014 fifa world cup",
+        "from": "wiki",
+        "score": -0.16304347826086957
+    },
+    {
+        "word": "2015 fifa women's world cup",
+        "from": "wiki",
+        "score": -0.16847826086956524
+    },
+    {
+        "word": "premier league",
+        "from": "wiki",
+        "score": -0.17391304347826086
+    },
+    {
+        "word": "2013–14 premier league",
+        "from": "wiki",
+        "score": -0.17934782608695654
+    },
+    {
+        "word": "2015–16 bundesliga",
+        "from": "wiki",
+        "score": -0.19021739130434784
+    },
+    {
+        "word": "rugby league",
+        "from": "wiki",
+        "score": -0.20652173913043476
+    },
+    {
+        "word": "third umpire",
+        "from": "wiki",
+        "score": -0.2173913043478261
+    },
+    {
+        "word": "umpire decision review system",
+        "from": "wiki",
+        "score": -0.22282608695652173
+    },
+    {
+        "word": "international cricket council",
+        "from": "wiki",
+        "score": -0.2282608695652174
+    },
+    {
+        "word": "hot spot",
+        "from": "wiki",
+        "score": -0.2391304347826087
+    },
+    {
+        "word": "violent extremism",
+        "from": "wiki",
+        "score": -0.2663043478260869
+    },
+    {
+        "word": "benito mussolini",
+        "from": "wiki",
+        "score": -0.28260869565217395
+    },
+    {
+        "word": "1934 fifa world cup",
+        "from": "wiki",
+        "score": -0.28804347826086957
+    },
+    {
+        "word": "adolf hitler",
+        "from": "wiki",
+        "score": -0.2934782608695652
+    },
+    {
+        "word": "1936 summer olympics",
+        "from": "wiki",
+        "score": -0.29891304347826086
+    },
+    {
+        "word": "1936 winter olympics",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "nazi ideology",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "aryan race",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "cultural nationalism",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "gaelic football",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "gaelic athletic association",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "great britain",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "croke park",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "lansdowne road",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "aviva stadium",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "royal ulster constabulary",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "good friday agreement",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "football war",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "munich massacre",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "proceedings of the national academy of sciences",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "washington redskins",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "redskins rule",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "étienne de la boétie",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "discourse on voluntary servitude",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "ancient greek religion",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "ancient olympic games",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "free content",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "free license",
+        "from": "wiki",
+        "score": -0.3
+    }
+]
+const travelWords = [
+    {
+        "word": "move",
+        "score": 30.075361071636944,
+        "from": "ol,w2v,wn,wn,wn,wn,reddit-slashes"
+    },
+    {
+        "word": "walk",
+        "score": 20.670046153846155,
+        "from": "ol,wn,wn,wn,wn,reddit-slashes"
+    },
+    {
+        "word": "tourism",
+        "score": 11.833224642024641,
+        "from": "ol,wiki,swiki,reddit-slashes"
+    },
+    {
+        "word": "journey",
+        "score": 11.751046153846154,
+        "from": "ol,wn,wn,wn"
+    },
+    {
+        "word": "come",
+        "score": 9.42930861606419,
+        "from": "ol,w2v,wn,wn"
+    },
+    {
+        "word": "trip",
+        "score": 9.373425832358981,
+        "from": "ol,w2v,wn,reddit-slashes"
+    },
+    {
+        "word": "motion",
+        "score": 9.2,
+        "from": "wn,wn,wn,reddit-slashes"
+    },
+    {
+        "word": "movement",
+        "score": 9.2,
+        "from": "wn,wn,wn,reddit-slashes"
+    },
+    {
+        "word": "swim",
+        "score": 9.2,
+        "from": "wn,wn,wn,reddit-slashes"
+    },
+    {
+        "word": "fly",
+        "score": 8.415938461538461,
+        "from": "ol,wn,wn,reddit-slashes"
+    },
+    {
+        "word": "vacation",
+        "score": 7.073212025758991,
+        "from": "ol,w2v,wiki,reddit-slashes"
+    },
+    {
+        "word": "step",
+        "score": 6.299999999999999,
+        "from": "wn,wn,wn"
+    },
+    {
+        "word": "creep",
+        "score": 6.299999999999999,
+        "from": "wn,wn,wn"
+    },
+    {
+        "word": "fall",
+        "score": 6.299999999999999,
+        "from": "wn,wn,wn"
+    },
+    {
+        "word": "float",
+        "score": 6.299999999999999,
+        "from": "wn,wn,wn"
+    },
+    {
+        "word": "drift",
+        "score": 6.299999999999999,
+        "from": "wn,wn,wn"
+    },
+    {
+        "word": "go",
+        "score": 6.081990358717944,
+        "from": "ol,w2v,wn"
+    },
+    {
+        "word": "ride",
+        "score": 5.648192307692307,
+        "from": "ol,wn,wn"
+    },
+    {
+        "word": "cruise",
+        "score": 5.185552344580662,
+        "from": "ol,w2v,wn"
+    },
+    {
+        "word": "automobile",
+        "from": "wiki,wn",
+        "score": 5.052987012987012
+    },
+    {
+        "word": "commuting",
+        "score": 4.87402987012987,
+        "from": "ol,wiki,wn"
+    },
+    {
+        "word": "run",
+        "score": 4.8,
+        "from": "wn,wn,reddit-slashes"
+    },
+    {
+        "word": "walking",
+        "score": 4.563900599400599,
+        "from": "ol,wiki,wn"
+    },
+    {
+        "word": "air",
+        "score": 4.067976923076922,
+        "from": "ol,wn,reddit-slashes"
+    },
+    {
+        "word": "drive",
+        "score": 4.0413461538461535,
+        "from": "ol,wn,reddit-slashes"
+    },
+    {
+        "word": "train",
+        "from": "wiki,reddit-slashes",
+        "score": 3.990649350649351
+    },
+    {
+        "word": "trips",
+        "score": 3.9875407129088085,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "bus",
+        "from": "wiki,reddit-slashes",
+        "score": 3.865974025974026
+    },
+    {
+        "word": "flights",
+        "score": 3.8250983108607537,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "tourist",
+        "score": 3.595992583751286,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "visit",
+        "score": 3.548476934534018,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "flight",
+        "score": 3.536858981711812,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "leave",
+        "score": 3.5338773843824938,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "transit",
+        "score": 3.499184569913644,
+        "from": "ol,w2v,reddit-slashes"
+    },
+    {
+        "word": "jaunt",
+        "score": 3.069630769230769,
+        "from": "ol,wn"
+    },
+    {
+        "word": "locomotion",
+        "score": 2.9605384615384613,
+        "from": "ol,wn"
+    },
+    {
+        "word": "traveling",
+        "score": 2.8997266696358635,
+        "from": "w2v,wn"
+    },
+    {
+        "word": "move around",
+        "score": 2.8600000000000003,
+        "from": "wn,wn"
+    },
+    {
+        "word": "airplane",
+        "from": "wiki",
+        "score": 2.8
+    },
+    {
+        "word": "crawl",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "circle",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "ascension",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "rise",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "spread",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "roll",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "stray",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "wander",
+        "score": 2.8,
+        "from": "wn,wn"
+    },
+    {
+        "word": "locomote",
+        "score": 2.783984615384615,
+        "from": "ol,wn"
+    },
+    {
+        "word": "travelling",
+        "score": 2.7308379617467224,
+        "from": "w2v,wn"
+    },
+    {
+        "word": "change of location",
+        "score": 2.5839846153846153,
+        "from": "ol,wn"
+    },
+    {
+        "word": "come up",
+        "score": 2.5,
+        "from": "wn,wn"
+    },
+    {
+        "word": "go up",
+        "score": 2.5,
+        "from": "wn,wn"
+    },
+    {
+        "word": "follow",
+        "score": 2.397135170867907,
+        "from": "w2v,wn"
+    },
+    {
+        "word": "entering",
+        "score": 2.3689735215993633,
+        "from": "w2v,wn"
+    },
+    {
+        "word": "traverse",
+        "score": 2.3240615384615384,
+        "from": "ol,wn"
+    },
+    {
+        "word": "roam",
+        "score": 2.310446153846154,
+        "from": "ol,wn"
+    },
+    {
+        "word": "human migration",
+        "from": "wiki,swiki",
+        "score": 2.2766233766233768
+    },
+    {
+        "word": "circulate",
+        "score": 2.2729999999999997,
+        "from": "ol,wn"
+    },
+    {
+        "word": "wend",
+        "score": 2.2700923076923076,
+        "from": "ol,wn"
+    },
+    {
+        "word": "travelers",
+        "score": 2.250725941362579,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "destination",
+        "score": 2.117024174464011,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "location",
+        "from": "wiki,reddit-slashes",
+        "score": 2
+    },
+    {
+        "word": "tours",
+        "score": 1.9839672198384877,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "traffic",
+        "score": 1.9563491910544757,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "tourists",
+        "score": 1.9513486822756483,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "travellers",
+        "score": 1.9434092739587916,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "enter",
+        "score": 1.9197117562229384,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "entry",
+        "score": 1.8751490664943424,
+        "from": "ol,w2v"
+    },
+    {
+        "word": "flow",
+        "score": 1.7999999999999998,
+        "from": "wn,reddit-slashes"
+    },
+    {
+        "word": "resort",
+        "score": 1.7999999999999998,
+        "from": "wn,reddit-slashes"
+    },
+    {
+        "word": "ski",
+        "score": 1.7999999999999998,
+        "from": "wn,reddit-slashes"
+    },
+    {
+        "word": "ship",
+        "from": "wiki,reddit-slashes",
+        "score": 1.7922077922077921
+    },
+    {
+        "word": "caravan",
+        "from": "wiki,wn",
+        "score": 1.779220779220779
+    },
+    {
+        "word": "service",
+        "score": 1.5168877460123462,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "visits",
+        "score": 1.470466648253753,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "research",
+        "from": "wiki,reddit-slashes",
+        "score": 1.4545454545454546
+    },
+    {
+        "word": "contact",
+        "score": 1.4370335359486597,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "airports",
+        "score": 1.4259115704636676,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "plans",
+        "score": 1.4235964006442527,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "meet",
+        "score": 1.400950015745999,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "stay",
+        "score": 1.4004895102590003,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "commute",
+        "score": 1.3878923076923078,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "business",
+        "score": 1.3859262959605858,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "weekend",
+        "score": 1.380417416244211,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "accommodation",
+        "score": 1.379476923076923,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "future",
+        "score": 1.37722244840286,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "transport",
+        "score": 1.3770153846153845,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "stop",
+        "score": 1.3764635205689753,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "excursions",
+        "score": 1.3761692307692308,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "taking",
+        "score": 1.3707431747439354,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "airline",
+        "score": 1.370625578513188,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "spend",
+        "score": 1.3680408069629795,
+        "from": "w2v,reddit-slashes"
+    },
+    {
+        "word": "ticket",
+        "score": 1.3596,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "visa",
+        "score": 1.3583538461538462,
+        "from": "ol,wiki"
+    },
+    {
+        "word": "freight",
+        "score": 1.3573230769230769,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "holiday",
+        "score": 1.3564461538461539,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "passport",
+        "score": 1.3557846153846154,
+        "from": "ol,wiki"
+    },
+    {
+        "word": "hospitality",
+        "score": 1.334230769230769,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "road",
+        "score": 1.3291230769230769,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "shipping",
+        "score": 1.326523076923077,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "relocation",
+        "score": 1.3209230769230769,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "relocate",
+        "score": 1.311553846153846,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "get",
+        "score": 1.2920461538461538,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "moving",
+        "score": 1.2917076923076922,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "make",
+        "score": 1.2758153846153846,
+        "from": "ol,reddit-slashes"
+    },
+    {
+        "word": "trade",
+        "from": "wiki,reddit-slashes",
+        "score": 1.2727272727272727
+    },
+    {
+        "word": "vehicle",
+        "from": "wiki,reddit-slashes",
+        "score": 1.1168831168831168
+    },
+    {
+        "word": "camping",
+        "from": "swiki,reddit-slashes",
+        "score": 1
+    },
+    {
+        "word": "pedestrian",
+        "from": "wiki",
+        "score": 0.7870129870129869
+    },
+    {
+        "word": "bicycle",
+        "from": "wiki",
+        "score": 0.7740259740259741
+    },
+    {
+        "word": "boat",
+        "from": "wiki",
+        "score": 0.735064935064935
+    },
+    {
+        "word": "gait",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "running",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "jog",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "lope",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "trot",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "crawling",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "creeping",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "circuit",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "lap",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "stroke",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "circumnavigation",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "traversal",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "roving",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "vagabondage",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "wandering",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "wayfaring",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "crossing",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "driving",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "riding",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "aviation",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "journeying",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "leg",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "stage",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "staging",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "seafaring",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "commutation",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "circulation",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "gravitation",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "levitation",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "descent",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "entrance",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "flowing",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "advance",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "progress",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "progression",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "ascent",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "rising",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "spreading",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "stampede",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "translation",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "carry",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "ease",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "whish",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "swap",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "seek",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "whine",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "ghost",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "do",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "raft",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "repair",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "displace",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "round",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "trundle",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "push",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "swing",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "cast",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "ramble",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "range",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "rove",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "swan",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "vagabond",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "meander",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "thread",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "weave",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "wind",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "forge",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "spurt",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "scramble",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "slide",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "slither",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "wheel",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "glide",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "bounce",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "breeze",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "blow",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "play",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "turn",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "err",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "motor",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "wing",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "steam",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "steamer",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "tram",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "taxi",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "ferry",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "sit",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "prance",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "arise",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "lift",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "ascend",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "descend",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "crank",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "zigzag",
+        "score": 0.7,
+        "from": "wn"
+    },
+    {
+        "word": "brachiation",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "peregrination",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "junketing",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "overfly",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "spirt",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "jounce",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "uprise",
+        "score": 0.6,
+        "from": "wn"
+    },
+    {
+        "word": "recreation",
+        "from": "wiki",
+        "score": 0.5662337662337662
+    },
+    {
+        "word": "destinations",
+        "score": 0.5634252181853536,
+        "from": "w2v"
+    },
+    {
+        "word": "access",
+        "score": 0.5527781989024392,
+        "from": "w2v"
+    },
+    {
+        "word": "visitors",
+        "score": 0.5296794045942143,
+        "from": "w2v"
+    },
+    {
+        "word": "journeys",
+        "score": 0.5290461538461538,
+        "from": "ol"
+    },
+    {
+        "word": "europe",
+        "score": 0.5277969920867931,
+        "from": "w2v"
+    },
+    {
+        "word": "allow",
+        "score": 0.5229805273813631,
+        "from": "w2v"
+    },
+    {
+        "word": "reservations",
+        "score": 0.5221422865852958,
+        "from": "w2v"
+    },
+    {
+        "word": "routes",
+        "score": 0.5214334235133982,
+        "from": "w2v"
+    },
+    {
+        "word": "commercial",
+        "score": 0.5213857984041104,
+        "from": "w2v"
+    },
+    {
+        "word": "will",
+        "score": 0.5212994193527994,
+        "from": "w2v"
+    },
+    {
+        "word": "services",
+        "score": 0.5210379986805745,
+        "from": "w2v"
+    },
+    {
+        "word": "check",
+        "score": 0.5203760901408745,
+        "from": "w2v"
+    },
+    {
+        "word": "continue",
+        "score": 0.5201785527236101,
+        "from": "w2v"
+    },
+    {
+        "word": "regularly",
+        "score": 0.5196374380499049,
+        "from": "w2v"
+    },
+    {
+        "word": "free",
+        "score": 0.51933140222767,
+        "from": "w2v"
+    },
+    {
+        "word": "take",
+        "score": 0.5167526449782439,
+        "from": "w2v"
+    },
+    {
+        "word": "offers",
+        "score": 0.5166728813877501,
+        "from": "w2v"
+    },
+    {
+        "word": "available",
+        "score": 0.5131780083202679,
+        "from": "w2v"
+    },
+    {
+        "word": "traveler",
+        "score": 0.5131076923076923,
+        "from": "ol"
+    },
+    {
+        "word": "abroad",
+        "score": 0.5117170889132897,
+        "from": "w2v"
+    },
+    {
+        "word": "offering",
+        "score": 0.5113645805743959,
+        "from": "w2v"
+    },
+    {
+        "word": "arriving",
+        "score": 0.5108526766033263,
+        "from": "w2v"
+    },
+    {
+        "word": "ports",
+        "score": 0.5097849450379128,
+        "from": "w2v"
+    },
+    {
+        "word": "itinerary",
+        "score": 0.5093384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "for",
+        "score": 0.5085078193258393,
+        "from": "w2v"
+    },
+    {
+        "word": "offer",
+        "score": 0.5078477986276831,
+        "from": "w2v"
+    },
+    {
+        "word": "provide",
+        "score": 0.5048890982475213,
+        "from": "w2v"
+    },
+    {
+        "word": "direct",
+        "score": 0.5048740892319409,
+        "from": "w2v"
+    },
+    {
+        "word": "canceled",
+        "score": 0.5043080663731405,
+        "from": "w2v"
+    },
+    {
+        "word": "new",
+        "score": 0.5034367157209133,
+        "from": "w2v"
+    },
+    {
+        "word": "overseas",
+        "score": 0.5022708571723382,
+        "from": "w2v"
+    },
+    {
+        "word": "link",
+        "score": 0.5020344391639399,
+        "from": "w2v"
+    },
+    {
+        "word": "on",
+        "score": 0.5013743640209366,
+        "from": "w2v"
+    },
+    {
+        "word": "charity",
+        "from": "wiki",
+        "score": 0.5012987012987014
+    },
+    {
+        "word": "sightseeing",
+        "score": 0.4994923076923077,
+        "from": "ol"
+    },
+    {
+        "word": "through",
+        "score": 0.4992713853802333,
+        "from": "w2v"
+    },
+    {
+        "word": "private",
+        "score": 0.4966214690024337,
+        "from": "w2v"
+    },
+    {
+        "word": "attention",
+        "score": 0.4963887468887324,
+        "from": "w2v"
+    },
+    {
+        "word": "to",
+        "score": 0.49553229345860783,
+        "from": "w2v"
+    },
+    {
+        "word": "international",
+        "score": 0.4954658392200308,
+        "from": "w2v"
+    },
+    {
+        "word": "places",
+        "score": 0.494609257942547,
+        "from": "w2v"
+    },
+    {
+        "word": "besides",
+        "score": 0.4946036064790796,
+        "from": "w2v"
+    },
+    {
+        "word": "transportation",
+        "score": 0.4931153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "times",
+        "score": 0.49296870677568255,
+        "from": "w2v"
+    },
+    {
+        "word": "begin",
+        "score": 0.49271033592151076,
+        "from": "w2v"
+    },
+    {
+        "word": "calls",
+        "score": 0.49253854629325555,
+        "from": "w2v"
+    },
+    {
+        "word": "arrive",
+        "score": 0.4925285412147012,
+        "from": "w2v"
+    },
+    {
+        "word": "country",
+        "score": 0.49225817506795594,
+        "from": "w2v"
+    },
+    {
+        "word": "customers",
+        "score": 0.4921045803226425,
+        "from": "w2v"
+    },
+    {
+        "word": "watch",
+        "score": 0.4913352032599271,
+        "from": "w2v"
+    },
+    {
+        "word": "sites",
+        "score": 0.4912757232935856,
+        "from": "w2v"
+    },
+    {
+        "word": "coming",
+        "score": 0.49110112754290475,
+        "from": "w2v"
+    },
+    {
+        "word": "depart",
+        "score": 0.4908153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "internet",
+        "score": 0.4897256535807108,
+        "from": "w2v"
+    },
+    {
+        "word": "countries",
+        "score": 0.4896834171832604,
+        "from": "w2v"
+    },
+    {
+        "word": "return",
+        "score": 0.4894572537857519,
+        "from": "w2v"
+    },
+    {
+        "word": "trek",
+        "score": 0.4889,
+        "from": "ol"
+    },
+    {
+        "word": "local",
+        "score": 0.4880727691022623,
+        "from": "w2v"
+    },
+    {
+        "word": "call",
+        "score": 0.4876413372614631,
+        "from": "w2v"
+    },
+    {
+        "word": "planned",
+        "score": 0.48763694467812535,
+        "from": "w2v"
+    },
+    {
+        "word": "continues",
+        "score": 0.48759482767569184,
+        "from": "w2v"
+    },
+    {
+        "word": "keep",
+        "score": 0.48752876016688795,
+        "from": "w2v"
+    },
+    {
+        "word": "send",
+        "score": 0.4868978357018086,
+        "from": "w2v"
+    },
+    {
+        "word": "elsewhere",
+        "score": 0.48663251179351,
+        "from": "w2v"
+    },
+    {
+        "word": "operate",
+        "score": 0.486583342602668,
+        "from": "w2v"
+    },
+    {
+        "word": "across",
+        "score": 0.4865119981195188,
+        "from": "w2v"
+    },
+    {
+        "word": "bringing",
+        "score": 0.48631341136534645,
+        "from": "w2v"
+    },
+    {
+        "word": "without",
+        "score": 0.4861073949662186,
+        "from": "w2v"
+    },
+    {
+        "word": "agencies",
+        "score": 0.48549346925323317,
+        "from": "w2v"
+    },
+    {
+        "word": "fare",
+        "score": 0.4849230769230769,
+        "from": "ol"
+    },
+    {
+        "word": "passengers",
+        "score": 0.48344615384615386,
+        "from": "ol"
+    },
+    {
+        "word": "outbound",
+        "score": 0.4819307692307692,
+        "from": "ol"
+    },
+    {
+        "word": "excursion",
+        "score": 0.4800307692307692,
+        "from": "ol"
+    },
+    {
+        "word": "honeymoon",
+        "score": 0.47825384615384614,
+        "from": "ol"
+    },
+    {
+        "word": "rides",
+        "score": 0.47767692307692305,
+        "from": "ol"
+    },
+    {
+        "word": "pilgrimage",
+        "from": "wiki",
+        "score": 0.4753246753246753
+    },
+    {
+        "word": "route",
+        "score": 0.4709307692307692,
+        "from": "ol"
+    },
+    {
+        "word": "voyages",
+        "score": 0.4709,
+        "from": "ol"
+    },
+    {
+        "word": "voyage",
+        "score": 0.47052307692307693,
+        "from": "ol"
+    },
+    {
+        "word": "passenger",
+        "score": 0.46904615384615383,
+        "from": "ol"
+    },
+    {
+        "word": "transporting",
+        "score": 0.46560769230769233,
+        "from": "ol"
+    },
+    {
+        "word": "sail",
+        "score": 0.4641461538461538,
+        "from": "ol"
+    },
+    {
+        "word": "visitor",
+        "score": 0.46092307692307694,
+        "from": "ol"
+    },
+    {
+        "word": "tour",
+        "score": 0.45903076923076924,
+        "from": "ol"
+    },
+    {
+        "word": "navigate",
+        "score": 0.4566846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "touring",
+        "score": 0.4563384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "mobility",
+        "score": 0.45453846153846156,
+        "from": "ol"
+    },
+    {
+        "word": "haulage",
+        "score": 0.4540230769230769,
+        "from": "ol"
+    },
+    {
+        "word": "migrate",
+        "score": 0.45356153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "transports",
+        "score": 0.4502923076923077,
+        "from": "ol"
+    },
+    {
+        "word": "voyager",
+        "score": 0.4492153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "reimbursement",
+        "score": 0.4478923076923077,
+        "from": "ol"
+    },
+    {
+        "word": "reach",
+        "score": 0.44745384615384615,
+        "from": "ol"
+    },
+    {
+        "word": "carriers",
+        "score": 0.44735384615384616,
+        "from": "ol"
+    },
+    {
+        "word": "navigation",
+        "score": 0.44556153846153845,
+        "from": "ol"
+    },
+    {
+        "word": "browse",
+        "score": 0.4427846153846154,
+        "from": "ol"
+    },
+    {
+        "word": "departure",
+        "score": 0.44133076923076925,
+        "from": "ol"
+    },
+    {
+        "word": "transfer",
+        "score": 0.43956923076923077,
+        "from": "ol"
+    },
+    {
+        "word": "cross",
+        "score": 0.4388923076923077,
+        "from": "ol"
+    },
+    {
+        "word": "borrow",
+        "score": 0.4356307692307692,
+        "from": "ol"
+    },
+    {
+        "word": "town",
+        "score": 0.4354692307692308,
+        "from": "ol"
+    },
+    {
+        "word": "proceed",
+        "score": 0.4346615384615385,
+        "from": "ol"
+    },
+    {
+        "word": "racing",
+        "score": 0.4342923076923077,
+        "from": "ol"
+    },
+    {
+        "word": "moves",
+        "score": 0.4342153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "surrender",
+        "score": 0.4327153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "touristic",
+        "score": 0.43162307692307694,
+        "from": "ol"
+    },
+    {
+        "word": "way",
+        "score": 0.43144615384615387,
+        "from": "ol"
+    },
+    {
+        "word": "refugee",
+        "from": "wiki",
+        "score": 0.41038961038961036
+    },
+    {
+        "word": "dance step",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "horseback riding",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "air travel",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "on the road",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "on tour",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "water travel",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "go around",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "betake oneself",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "pass over",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "get about",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "get around",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "travel purposefully",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "take the air",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "be adrift",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "slice into",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "slice through",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "move up",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "come down",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "go down",
+        "score": 0.39999999999999997,
+        "from": "wn"
+    },
+    {
+        "word": "hitchhike",
+        "score": 0.3983153846153846,
+        "from": "ol"
+    },
+    {
+        "word": "cycling",
+        "from": "wiki",
+        "score": 0.3714285714285714
+    },
+    {
+        "word": "old french",
+        "from": "wiki",
+        "score": 0.37012987012987014
+    },
+    {
+        "word": "mount everest",
+        "from": "wiki",
+        "score": 0.35714285714285704
+    },
+    {
+        "word": "amazon rainforest",
+        "from": "wiki",
+        "score": 0.34415584415584416
+    },
+    {
+        "word": "extreme tourism",
+        "from": "wiki",
+        "score": 0.3311688311688313
+    },
+    {
+        "word": "adventure travel",
+        "from": "wiki",
+        "score": 0.3181818181818182
+    },
+    {
+        "word": "cruise ship",
+        "from": "wiki",
+        "score": 0.2922077922077922
+    },
+    {
+        "word": "pompeii",
+        "from": "wiki",
+        "score": 0.2805194805194805
+    },
+    {
+        "word": "bullock cart",
+        "from": "wiki",
+        "score": 0.2792207792207793
+    },
+    {
+        "word": "baiae",
+        "from": "wiki",
+        "score": 0.2675324675324675
+    },
+    {
+        "word": "aircraft",
+        "from": "wiki",
+        "score": 0.24155844155844153
+    },
+    {
+        "word": "volunteer travel",
+        "from": "wiki",
+        "score": 0.21428571428571425
+    },
+    {
+        "word": "merchants",
+        "from": "wiki",
+        "score": 0.2025974025974026
+    },
+    {
+        "word": "retailing",
+        "from": "wiki",
+        "score": 0.17662337662337663
+    },
+    {
+        "word": "bed and breakfast",
+        "from": "swiki",
+        "score": 0.16666666666666663
+    },
+    {
+        "word": "peddler",
+        "from": "wiki",
+        "score": 0.16363636363636364
+    },
+    {
+        "word": "mission trip",
+        "from": "wiki",
+        "score": 0.16233766233766234
+    },
+    {
+        "word": "business travel",
+        "from": "wiki",
+        "score": 0.14935064935064934
+    },
+    {
+        "word": "friar",
+        "from": "wiki",
+        "score": 0.13766233766233765
+    },
+    {
+        "word": "autobiography",
+        "from": "swiki",
+        "score": 0.1333333333333333
+    },
+    {
+        "word": "theology",
+        "from": "wiki",
+        "score": 0.12467532467532466
+    },
+    {
+        "word": "wholesaling",
+        "from": "wiki",
+        "score": 0.1155844155844156
+    },
+    {
+        "word": "human-powered transport",
+        "from": "wiki",
+        "score": 0.09740259740259738
+    },
+    {
+        "word": "aristocrat",
+        "from": "wiki",
+        "score": 0.0727272727272727
+    },
+    {
+        "word": "gyrovague",
+        "from": "wiki",
+        "score": 0.05064935064935064
+    },
+    {
+        "word": "public transport",
+        "from": "wiki",
+        "score": 0.045454545454545414
+    },
+    {
+        "word": "work",
+        "score": 0.038,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "railway",
+        "from": "wiki",
+        "score": 0.03376623376623375
+    },
+    {
+        "word": "live",
+        "score": 0.02,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "adventure",
+        "score": 0.016,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "exploration",
+        "score": 0.016,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "quarantine",
+        "score": 0.01,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hiking",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hotel",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "time",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mini",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "dining",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "sample",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "nature",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "multiverse",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "airlines",
+        "score": 0.008,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "airship",
+        "from": "wiki",
+        "score": 0.007792207792207795
+    },
+    {
+        "word": "living",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "vacations",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "backup",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "event",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "the",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "lodging",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "holidays",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "around",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "food",
+        "score": 0.006,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "portable",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "activity",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "survival",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "throw",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "casino",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "gatherings",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "van",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "colonization",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cover",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "edc",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "landscape",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "alternate",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "manipulation",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "gas",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "street",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "student",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "secondary",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "health",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "buy",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "lifestyle",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "fun",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "pocket",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "games",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "long",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "shop",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "warp",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "groceries",
+        "score": 0.004,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "residency",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "grocery",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "store",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "outdoors",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "small",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "demands",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "order",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "fight",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "closures",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "appearances",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "wanderlust",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "lost",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "prep",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "solo",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "flying",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "merchandise",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "control",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "per",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "meeting",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "remote",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "sofa",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "murder",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "security",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "passports",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "join",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "trial",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "usage",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "retail",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "locals",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "different",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "containers",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mild",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hat",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "using",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "jobs",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "passing",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "testing",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "bars",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "band",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "experience",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "photographer",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "rest",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "convenience",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "dive",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "life",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "strollers",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "spawn",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "map",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "enjoy",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "working",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "filming",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "casinos",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "use",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "space",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "react",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "not",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "sabrina",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cheat",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "vehicular",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "leisure",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "workers",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "book",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "sporty",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "another",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mountain",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "costs",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "commerce",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hand",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "knee",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "beach",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "group",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "accommodations",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "water",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "open",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "web",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "downtime",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "study",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "doing",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "development",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "displacement",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "strolling",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mall",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "public",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "exclusives",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "worm",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "markers",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "mind",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "getting",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "velocity",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "densities",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "load",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "quantum",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "look",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "gifts",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "migration",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "leaving",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "culinary",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "tickets",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "day",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "bag",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "quest",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "entertainment",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "perceive",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "telenor",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "chill",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "other",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "wait",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "dreams",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "factory",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "consulate",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "resistance",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "shorten",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "back",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "fuel",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "thriller",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "resource",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "visas",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "off",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "smearing",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "speed",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "booking",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "fast",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "lockdown",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "fees",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "war",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "supernatural",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "her",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "anger",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "client",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "sunset",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "petrol",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "kids",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "child",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "discovery",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "donuts",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "communication",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "lan",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "tensions",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "series",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "programming",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "value",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "volunteer",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "higher",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "vaccine",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hotels",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "organized",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "temporal",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "pandemic",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "interplanetary",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "minis",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "father",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cat",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "exploring",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "sleep",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "camp",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "science",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "events",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "teleport",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "negative",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cargo",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "foul",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "ncr",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "neck",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "college",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "see",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "reading",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "matches",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "out",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "action",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "system",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "immediately",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "combo",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "workouts",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cultural",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "equipment",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "cars",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "social",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "restaurants",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "outdoor",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "grabbing",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "fluff",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "home",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "gift",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hardship",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "teams",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "communicate",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "footwork",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "points",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "hitch",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "battle",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "club",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "elopement",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "redo",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "gather",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "practice",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "face",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "old",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "know",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "parents",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "restrict",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "packing",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "workhorse",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "apartment",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "daily",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "age",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "disney",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "party",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "waiting",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "carrying",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "beer",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "tle",
+        "score": 0.002,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "safety",
+        "from": "wiki",
+        "score": 0
+    },
+    {
+        "word": "journal",
+        "from": "swiki",
+        "score": 0
+    },
+    {
+        "word": "classical antiquity",
+        "from": "wiki",
+        "score": -0.006493506493506496
+    },
+    {
+        "word": "christopher columbus",
+        "from": "wiki",
+        "score": -0.04545454545454547
+    },
+    {
+        "word": "middle ages",
+        "from": "wiki",
+        "score": -0.07142857142857145
+    },
+    {
+        "word": "covid",
+        "score": -0.092,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "vlogs",
+        "score": -0.096,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "moonkin",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "statis",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "qol",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "reseting",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "groundhogs",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "pathfinding",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "transprt",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "expedia",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "roadtrip",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "gadget",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "infulencer",
+        "score": -0.098,
+        "from": "reddit-slashes"
+    },
+    {
+        "word": "detr",
+        "from": "wiki",
+        "score": -0.1
+    },
+    {
+        "word": "pastoral care",
+        "from": "wiki",
+        "score": -0.18831168831168832
+    },
+    {
+        "word": "travelling minstrel",
+        "from": "wiki",
+        "score": -0.2012987012987013
+    },
+    {
+        "word": "canterbury tales",
+        "from": "wiki",
+        "score": -0.2142857142857143
+    },
+    {
+        "word": "grand tour",
+        "from": "wiki",
+        "score": -0.24025974025974028
+    },
+    {
+        "word": "french revolution",
+        "from": "wiki",
+        "score": -0.2532467532467533
+    },
+    {
+        "word": "thomas cook",
+        "from": "wiki",
+        "score": -0.27922077922077926
+    },
+    {
+        "word": "alexis alford",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "internal passport",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "travel itinerary",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "health insurance",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "diplomatic mission",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "international driving permit",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "vehicle insurance",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "seat belt",
+        "from": "wiki",
+        "score": -0.3
+    },
+    {
+        "word": "seat belt legislation",
+        "from": "wiki",
+        "score": -0.3
+    }
+]
 
-const getRandomSelection = (arr: any[], size: number) => {
-    return shuffle(arr)
-        .filter(entry => entry.score > 5)
-        .map(entry => entry.word)
-        .slice(0, size);
+
+const getRandomSelection = (arr: any[], size: number, minScore: number = 5) => {
+    return getNRandomElements(
+        arr
+        .filter(entry => entry.score > minScore)
+        .map(entry => entry.word),
+        size
+    )
 }
 
 export const findWordsRelatedTo = (word: string, maxResults= 8) => {
@@ -11759,9 +20908,15 @@ export const findWordsRelatedTo = (word: string, maxResults= 8) => {
         case "Film & Animation":
             return getRandomSelection(filmWords, maxResults);
         case "Autos & Vehicles":
-            return getRandomSelection(autoWords, maxResults);
+            return getRandomSelection(autoWords, maxResults, 2);
         case "Music":
             return getRandomSelection(musicWords, maxResults);
+        case "Pets & Animals":
+            return getRandomSelection(petWords, maxResults);
+        case "Sports":
+            return getRandomSelection(sportsWords, maxResults);
+        case "Travel & Events":
+            return getRandomSelection(travelWords, maxResults);
         default:
             return [word]
     }

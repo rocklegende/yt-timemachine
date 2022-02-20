@@ -16,6 +16,7 @@ $body-background-color: #fafafa;
 }
 body {
   background-color: $body-background-color;
+  width: 100vw;
 }
 
 a {
@@ -72,7 +73,6 @@ header {
 }
 
 .youtube-year-selector {
-  padding-left: 0.75rem;
   border: none;
   border-bottom: 2px solid black;
   color: black;
@@ -132,7 +132,18 @@ header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-family: 'Athiti', sans-serif;
+  font-family: "Signika", sans-serif;
+  font-weight: 400 !important;
+}
+
+.web-site-title {
+  display: block;
+  font-size: 1.17em;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  font-weight: 400;
 }
 
 .App-logo {
@@ -147,6 +158,7 @@ main {
   max-width: $max-width-content;
   margin: 0 auto 300px auto;
   width: 100%;
+  padding: 0.5rem;
 }
 
 .secondary-tab {
@@ -167,9 +179,7 @@ main {
   border-bottom: none;
 }
 
-.primary-tab {
-  padding-left: 10px;
-}
+
 
 .videoplayer {
   aspect-ratio: 16/9;
@@ -240,10 +250,15 @@ main {
   box-shadow: 0 0 0 1px rgb(198 198 198);
 }
 
+
+.creator-info-box-body {
+  font-size: 0.95rem;
+}
+
 .creator-info-box-channel-details {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   height: 100%;
 }
@@ -269,11 +284,21 @@ input:hover {
   margin-top: 10px;
 }
 
-.video-statistics {
+.video-statistics-primary-row {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+}
+
+.video-statistics-secondary-row {
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+#login-to-rate-tooltip {
+  display: none;
 }
 
 .rating {
@@ -311,12 +336,8 @@ input:hover {
 .watch-video-view {
   display: grid;
   grid-auto-flow: row;
-  grid-template-columns: 1fr var(--side-view-width);
-  grid-template-rows: calc(100vh - var(--header-height));
-}
-
-.startpage {
-  padding: 2rem;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 5rem;
 }
 
 .black-link {
@@ -443,6 +464,32 @@ input:hover {
   .channel-title {
     font-size: 0.75rem;
   }
+}
+
+@media only screen and (min-width: 767px) {
+  .video-grid-element-hero {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  main {
+    padding: 2rem;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .watch-video-view {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: 1fr var(--side-view-width);
+    grid-template-rows: calc(100vh - var(--header-height));
+  }
+
+  .primary-tab {
+    padding-left: 10px;
+  }
+
+
 }
 
 

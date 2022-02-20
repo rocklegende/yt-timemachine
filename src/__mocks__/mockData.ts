@@ -1,4 +1,4 @@
-import {Item} from "../youtubeDataProvider";
+import {Item} from "../providers/youtubeDataProvider";
 
 export const mockVideoItems: Item[] = [
     {

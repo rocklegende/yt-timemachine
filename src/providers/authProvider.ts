@@ -1,4 +1,4 @@
-import {supabase} from "./supabaseWrapper";
+import {supabase} from "../helpers/supabaseWrapper";
 import {User} from "@supabase/supabase-js";
 
 export default class AuthProvider {

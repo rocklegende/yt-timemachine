@@ -1,7 +1,7 @@
 import React, {ReactChildren, useContext, useEffect, useState, FunctionComponent} from "react";
 import {User} from "@supabase/supabase-js";
-import AuthProvider from "./authProvider";
-import {supabase} from "./supabaseWrapper";
+import AuthProvider from "../providers/authProvider";
+import {supabase} from "../helpers/supabaseWrapper";
 
 interface IAuthContext {
     user: User | null,

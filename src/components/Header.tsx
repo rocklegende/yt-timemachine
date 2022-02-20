@@ -1,4 +1,4 @@
-import logo from "./logo.png";
+import logo from "../images/logo.png";
 import React, {useState} from "react";
 import {useAuth} from "./AuthContextProvider";
 import {Link} from "react-router-dom";
@@ -24,7 +24,7 @@ export default function Header() {
                     <Link to={"/"} style={{height: "100%"}}>
                         <img src={logo} className="App-logo" alt="logo"/>
                     </Link>
-                    <h3 aria-label={"title"}>YouTube time machine</h3>
+                    <span className={"web-site-title"} aria-label={"title"}>YouTube time machine</span>
                 </div>
                 {/*<div className={"youtube-year-selector-container"}>*/}
                 {/*    <label htmlFor={"youtube-year-selector"} style={{marginRight: "0.5rem"}}>bring me back to</label>*/}

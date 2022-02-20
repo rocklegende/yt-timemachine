@@ -1,6 +1,6 @@
 import React from "react";
 
-import App from "../App";
+import App from "../components/App";
 import {render, fireEvent, waitFor, screen} from '@testing-library/react';
 
 jest.mock("../youtubeDataProvider");

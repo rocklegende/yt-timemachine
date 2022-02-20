@@ -1,11 +1,11 @@
 import {FunctionComponent, useEffect, useState} from "react";
 import {useData} from "./DataContextProvider";
-import {Item} from "./youtubeDataProvider";
-import {showErrorMessage} from "./helper";
-import './videoGridStyles.scss';
+import {Item} from "../providers/youtubeDataProvider";
+import {showErrorMessage} from "../helpers/helper";
+import '../styles/videoGridStyles.scss';
 import {Link} from "react-router-dom";
 import VideoThumbnailRenderer from "./VideoThumbnailRenderer";
-import {findWordsRelatedTo} from "./relatedWordsHelper";
+import {findWordsRelatedTo} from "../helpers/relatedWordsHelper";
 
 type VideoRecommendationGridProps = {
     categoryId: string;
@@ -17,22 +17,23 @@ const VideoRecommendationSection: FunctionComponent<VideoRecommendationGridProps
     = ({categoryId, title, firstElementAsHero}) => {
     const dataContext = useData();
     const dataProvider = dataContext.dataProvider;
-    console.log(findWordsRelatedTo(title));
-    console.log(firstElementAsHero);
 
     const [videos, setVideos] = useState<Item[]>([]);
     const fetchAndSetVideos = async () => {
         if (categoryId === "latest") {
-            const videos = await dataProvider.getLatestVideos();
-            setVideos(videos);
+            const {data, error} = await dataProvider.getLatestVideos();
+            if (error) console.error(error)
+            if (data) setVideos(data);
             return;
         }
 
         const {data, error} = await dataProvider.getVideosFromCategory(title, "mostPopular");
+        console.log(data);
         if (error) {
-            showErrorMessage(`Error fetching video for category ${title}`)
+            showErrorMessage(`Error fetching video for category ${title}`);
+            return;
         }
-        setVideos(data);
+        if (data) setVideos(data);
     }
 
     useEffect(() => {
@@ -49,7 +50,7 @@ const VideoRecommendationSection: FunctionComponent<VideoRecommendationGridProps
             <h2 className={"video-recommendation-section-title"}>{title}</h2>
             <div className={"video-grid"}>
                 {videos.map((video, index) => (
-                    <div className={`video-grid-element ${(firstElementAsHero && index === 0) ? "video-grid-element-hero" : ""}`}>
+                    <div key={index} className={`video-grid-element ${(firstElementAsHero && index === 0) ? "video-grid-element-hero" : ""}`}>
                         <VideoThumbnailRenderer
                         item={video}
                         mode={"overlay"}

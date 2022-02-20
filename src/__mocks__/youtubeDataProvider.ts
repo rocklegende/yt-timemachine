@@ -1,4 +1,4 @@
-import {Item, Rating, RatingSummary, VideoStatistics} from "../youtubeDataProvider";
+import {Item, Rating, RatingSummary, VideoStatistics} from "../providers/youtubeDataProvider";
 
 export class YoutubeDataProvider {
 

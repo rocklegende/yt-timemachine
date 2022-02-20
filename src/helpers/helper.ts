@@ -23,6 +23,24 @@ export const processYoutubeDurationString = (ytDurationString: string): string =
     return strin
 }
 
+/**
+ * Shuffles array in place. ES6 version
+ * @param {Array} a items An array containing the items.
+ */
+export const shuffle = (a: any[]) => {
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+export const getNRandomElements = (arr: any[], n: number) => {
+    if (arr.length === 0 || n < 0) return arr;
+    if (n > arr.length + 1) return shuffle(arr).slice(0, arr.length);
+    return shuffle(arr).slice(0, n);
+}
+
 export const showErrorMessage = (message: string) => {
     Store.addNotification({
         title: "Error",

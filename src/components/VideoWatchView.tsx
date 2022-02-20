@@ -1,14 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import './App.scss';
-import {Item, Rating, RatingSummary, VideoStatistics} from "./youtubeDataProvider";
+import '../styles/App.scss';
+import {Item, Rating, RatingSummary, VideoStatistics} from "../providers/youtubeDataProvider";
 import YouTube, {YouTubeProps, Options, PlayerVars} from "react-youtube";
 import {useAuth} from "./AuthContextProvider";
 import {RatingView} from "./Rating";
-import {processYoutubeViewCount, showErrorMessage, showSuccessMessage} from "./helper";
+import {processYoutubeViewCount, showErrorMessage, showSuccessMessage} from "../helpers/helper";
 import CommentSection from "./CommentSection";
 import CollapsableVideoList from "./CollapsableVideoList";
 import {useParams} from "react-router-dom";
 import {useData} from "./DataContextProvider";
+import CreatorInfoBox from "./CreatorInfoBox";
 
 
 function VideoWatchView() {
@@ -74,18 +75,28 @@ function VideoWatchView() {
     useEffect(() => {
         const getMoreInformationAboutVideoFromUrl = async () => {
             let res = await dataProvider.getMoreInfoAboutVideos([currentVideoId]);
-            if (res.length === 0) {
+            if (!res.data || (res.data && res.data.length === 0) ) {
                 return;
             }
 
-            let videoItem = res[0];
+            let videoItem = res.data[0];
             setCurrentVideoItem(videoItem);
 
-            let _relatedVideos: Item[] = await dataProvider.getVideosRelatedToTags(videoItem.snippet!.tags || []);
-            setRelatedVideos(_relatedVideos);
+            let _relatedVideosResponse = await dataProvider.getVideosRelatedToTags(videoItem.snippet!.tags || []);
+            if (_relatedVideosResponse.error) {
+                console.error(_relatedVideosResponse.error);
+            }
+            if (_relatedVideosResponse.data) {
+                setRelatedVideos(_relatedVideosResponse.data.filter(item => item.id !== videoId));
+            }
 
-            let _moreVideosFromChannel: Item[] = await dataProvider.getVideosFromChannel(videoItem.snippet?.channelId!);
-            setMoreVideosFromChannel(_moreVideosFromChannel);
+            let _moreVideosFromChannelResponse = await dataProvider.getVideosFromChannel(videoItem.snippet?.channelId!);
+            if (_moreVideosFromChannelResponse.error) {
+                console.error(_moreVideosFromChannelResponse.error);
+            }
+            if (_moreVideosFromChannelResponse.data) {
+                setMoreVideosFromChannel(_moreVideosFromChannelResponse.data.filter(item => item.id !== videoId));
+            }
         }
 
         getMoreInformationAboutVideoFromUrl();
@@ -105,33 +116,19 @@ function VideoWatchView() {
                             videoId={currentVideoId}
                             opts={playerOptions}
                         />
-                        <div className={"tab-element video-statistics"}>
+                        <div className={"tab-element"}>
                             <RatingView
-                                ratingCount={ratingSummary?.numTotalRatings}
                                 value={ Math.floor(ratingSummary?.avgStars || 0)}
                                 ratable={true}
+                                ratingSummary={ratingSummary}
+                                viewCount={getViewCount()}
                                 onRatingChanged={(stars: number) => handleRatingChanged(stars)}
                             />
-                            <span>You rated {ratingSummary?.ownGivenStars} stars </span>
-                            <span>Views: {getViewCount()}</span>
                         </div>
                         <CommentSection videoId={currentVideoId} />
                     </div>
                     <div className={"secondary-tab"}>
-                        <div className={"creator-info-box"} >
-                            <div className={"creator-info-box-header"}>
-                                <div className={"creator-info-box-channel-details"}>
-                                    <img src={currentVideoItem.snippet!.thumbnails.medium.url}/>
-                                    <div className={"creator-info-box-description"}>
-                                        <span>From: <a href={"https://www.google.com"}>{currentVideoItem.snippet?.channelTitle}</a></span>
-                                        <br/>
-                                        <span>Joined: 10 years ago</span>
-                                        <br/>
-                                        <span>Videos: 28</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {currentVideoItem.snippet && (<CreatorInfoBox channelId={currentVideoItem.snippet.channelId} />)}
 
                         <CollapsableVideoList
                             items={moreVideosFromChannel}

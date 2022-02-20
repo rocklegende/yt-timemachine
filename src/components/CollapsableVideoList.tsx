@@ -1,4 +1,4 @@
-import {Item} from "./youtubeDataProvider";
+import {Item} from "../providers/youtubeDataProvider";
 import {Collapse} from "reactstrap";
 import React, {FunctionComponent, useState} from "react";
 import VideoList from "./VideoList";

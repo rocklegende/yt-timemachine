@@ -1,7 +1,7 @@
 import {FunctionComponent, createContext, useContext} from "react";
-import {IDataProvider} from "./interfaces/IDataProvider";
-import YoutubeDataProvider from "./youtubeDataProvider";
-import PartlyFakeDataProvider from "./partlyFakeDataProvider";
+import {IDataProvider} from "../interfaces/IDataProvider";
+import YoutubeDataProvider from "../providers/youtubeDataProvider";
+import PartlyFakeDataProvider from "../providers/partlyFakeDataProvider";
 
 interface IDataContext {
     dataProvider: IDataProvider;
@@ -19,7 +19,9 @@ export const useData = () => {
 const DataContextProvider: FunctionComponent = ({children}) => {
     return (
         <DataContext.Provider value={{
-            dataProvider: new PartlyFakeDataProvider(2010),
+            dataProvider: process.env.REACT_APP_USE_FAKE_YOUTUBE_PROVIDER === "true"
+                ? new PartlyFakeDataProvider(2010)
+                : new YoutubeDataProvider(2010),
         }}>
             {children}
         </DataContext.Provider>

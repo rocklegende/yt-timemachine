@@ -1,5 +1,5 @@
 import {Rating, RatingSummary, YTComment} from "./youtubeDataProvider";
-import {supabase} from "./supabaseWrapper";
+import {supabase} from "../helpers/supabaseWrapper";
 
 export const _createComment = async (comment: YTComment) => {
     const {data, error} = await supabase
@@ -9,17 +9,22 @@ export const _createComment = async (comment: YTComment) => {
 }
 
 export const _getCommentsForVideo = async (videoId: string, pageNumber: number) => {
-    const entriesPerPage = 5;
+    const commentsPerPage = 5;
+
+    const countResponse = await _getCommmentsCount(videoId);
+    if (countResponse.error) return {commentsPageCount: null, data: null, error: countResponse.error};
+    const countTotal = countResponse.count;
+
     const {data, error} = await supabase
         .rpc("get_comments_with_useridentity")
         .match({video_id: videoId})
-        .range(entriesPerPage * (pageNumber - 1), entriesPerPage * (pageNumber) - 1)
+        .range(commentsPerPage * (pageNumber - 1), commentsPerPage * (pageNumber) - 1)
         .order('created_at', { ascending: false })
 
-    return {data, error}
+    return {commentsPageCount: Math.ceil(countTotal / commentsPerPage) || 1, data, error}
 }
 
-export const _getCommmentsCount = async(videoId: string) => {
+export const _getCommmentsCount = async(videoId: string): Promise<any> => {
     return supabase
         .from("comment")
         .select("*", {count: "exact", head: true})

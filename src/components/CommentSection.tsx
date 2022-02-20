@@ -1,8 +1,8 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import {useAuth} from "./AuthContextProvider";
-import {YTComment} from "./youtubeDataProvider";
-import {showErrorMessage} from "./helper";
-import "./commentSectionStyle.scss";
+import {YTComment} from "../providers/youtubeDataProvider";
+import {showErrorMessage} from "../helpers/helper";
+import "../styles/commentSectionStyle.scss";
 
 import moment from "moment";
 import {useData} from "./DataContextProvider";
@@ -15,18 +15,21 @@ const CommentSection: React.FC<CommentSectionProps> = ({videoId}) => {
     const auth = useAuth();
     const dataContext = useData();
     const dataProvider = dataContext.dataProvider;
+    const [pageCount, setPageCount] = useState();
     const [page, setPage] = useState(1);
     const [comments, setComments] = useState<YTComment[]>([]);
     const [commentsCount, setCommentsCount] = useState(0);
     const [commentSubmissionDisabled, setCommentSubmissionDisabled] = useState(false);
 
     const fetchAndSetComments = async (pageNumber: number) => {
-        const {data, error} = await dataProvider.getCommentsForVideo(videoId, pageNumber);
+        const {commentsPageCount, data, error} = await dataProvider.getCommentsForVideo(videoId, pageNumber);
         if (!data) {
             showErrorMessage(`Fetching comments failed, reason: ${error}`)
             return;
         }
         setComments(data);
+        //@ts-ignore
+        setPageCount(commentsPageCount);
     }
 
     const fetchAndSetCommentsCount = async () => {
@@ -108,9 +111,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({videoId}) => {
                     Submit comment
                 </button>
             </form>
-            <div>
-                { comments.map( (comment) => (
-                    <div className={"comment"}>
+            <div className={"comment-display-container"}>
+                { comments.map( (comment, index) => (
+                    <div key={index} className={"comment"}>
                         <img className={"user-avatar large"} src={comment.user_avatar_url} />
                         <div>
                             <span className={"comment-header"}>
@@ -124,9 +127,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({videoId}) => {
                 ))}
             </div>
             <div className={"comment-section-pagination"}>
-                <button onClick={() => decreasePage()}>{"<"}</button>
-                <span className={"page-number"}>{page}</span>
-                <button onClick={() => increasePage()}>{">"}</button>
+                <button disabled={page === 1} onClick={() => decreasePage()}>{"<"}</button>
+                <span className={"page-number"}>{page} / {pageCount}</span>
+                <button disabled={page === pageCount} onClick={() => increasePage()}>{">"}</button>
             </div>
         </div>
     )

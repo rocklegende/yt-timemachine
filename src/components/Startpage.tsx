@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useData} from "./DataContextProvider";
-import {showErrorMessage} from "./helper";
+import {showErrorMessage} from "../helpers/helper";
 import VideoRecommendationSection from "./VideoRecommendationSection";
 import moment from "moment";
 
@@ -14,7 +14,6 @@ function Startpage() {
     const changeYear = (newYear: number) => {
         setYear(newYear);
         dataProvider.changeYear(newYear);
-        console.log(dataProvider);
     }
 
     const fetchAndSetVideoCategories = async () => {
@@ -43,7 +42,6 @@ function Startpage() {
             <div className={"youtube-year-selector-container"}>
                 <label
                     htmlFor={"youtube-year-selector"}
-                    style={{marginRight: "0.5rem"}}
                     className={"youtube-year-selector-label"}
                 >
                     Welcome to {currentDate.format('MMMM Do')}
@@ -55,6 +53,8 @@ function Startpage() {
                     className={"youtube-year-selector"}
                     onChange={(e) => changeYear(parseInt(e.target.value))}
                 >
+                    <option value="2006">2006</option>
+                    <option value="2007">2007</option>
                     <option value="2008">2008</option>
                     <option value="2009">2009</option>
                     <option value="2010">2010</option>
@@ -67,8 +67,9 @@ function Startpage() {
                 title={"New this week"}
                 firstElementAsHero={true}
             />
-            {videoCategories.slice(0, 3).map((category: any) => (
+            {videoCategories.slice(0, 6).map((category: any, index) => (
                 <VideoRecommendationSection
+                    key={index}
                     categoryId={category.id}
                     title={category.snippet.title}
                 />

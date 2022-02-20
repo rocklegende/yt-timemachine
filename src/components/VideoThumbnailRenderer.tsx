@@ -1,6 +1,6 @@
-import {Item} from "./youtubeDataProvider";
+import {Item} from "../providers/youtubeDataProvider";
 import {Link} from "react-router-dom";
-import {processYoutubeDurationString, processYoutubeViewCount} from "./helper";
+import {processYoutubeDurationString, processYoutubeViewCount} from "../helpers/helper";
 
 type VideoThumbnailRendererMode = "overlay" | "aside"
 
