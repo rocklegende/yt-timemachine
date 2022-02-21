@@ -1,149 +1,82 @@
-import axios, {AxiosResponse} from "axios";
-
-export interface YoutubeSearchResult {
-    kind:          string;
-    etag:          string;
-    nextPageToken: string;
-    regionCode:    string;
-    pageInfo:      PageInfo;
-    items:         Item[];
-}
-
-export interface ContentDetails {
-    duration:        string;
-    dimension:       string;
-    definition:      string;
-    caption:         string;
-    licensedContent: boolean;
-    contentRating:   ContentRating;
-    projection:      string;
-}
-
-export interface ContentRating {
-}
-
-export interface Item {
-    kind:     string;
-    etag:     string;
-    id:       ID;
-    snippet?: Snippet;
-    statistics?: YTVideoStatistics;
-    contentDetails?: ContentDetails;
-}
-
-export interface ID {
-    kind:    string;
-    videoId: string;
-}
-
-export interface Snippet {
-    publishedAt:          Date;
-    channelId:            string;
-    title:                string;
-    description:          string;
-    thumbnails:           Thumbnails;
-    channelTitle:         string;
-    liveBroadcastContent: string;
-    publishTime:          Date;
-}
-
-export interface Thumbnails {
-    default:  YoutubeThumbnail;
-    medium:   YoutubeThumbnail;
-    high:     YoutubeThumbnail;
-    standard: YoutubeThumbnail;
-    maxres:   YoutubeThumbnail;
-}
-
-export interface YoutubeThumbnail {
-    url:    string;
-    width:  number;
-    height: number;
-}
-
-export interface PageInfo {
-    totalResults:   number;
-    resultsPerPage: number;
-}
-
-export interface Rating {
-    stars: 1 | 2 | 3 | 4 | 5;
-}
-
-export interface YTVideoStatistics {
-    commentCount: string;
-    favoriteCount: string;
-    likeCount: string;
-    viewCount: string;
-}
-
-export interface RatingSummary {
-    numTotalRatings: number;
-    avgRating: number;
-    ownRating?: Rating;
-}
-
-export interface VideoStatistics {
-    numViews: number;
-    ratingSummary: RatingSummary;
-    videoLength: number;
-}
-
-export interface Creator {
-    name: string;
-    channelUrl: string;
-}
-
-export interface Video {
-    title: string;
-    creator: Creator;
-    statistics: VideoStatistics;
-    ratingSummary: RatingSummary;
-}
-
-export interface VideoList {
-    videos: [Video];
-}
+import {Item, Rating, RatingSummary, VideoStatistics} from "../providers/youtubeDataProvider";
 
 export class YoutubeDataProvider {
 
-    STANDARD_LIST_PARAMETERS = {
-        maxResults: 20
-    };
-
-    STANDARD_SEARCH_PARAMETERS = {
-        maxResults: 20,
-        // publishedBefore: "2014-01-28T15:04:32Z"
-    }
-
-    private loadClient = async () => {
-        return new Promise((resolve, reject) => {
-            gapi.load("client", resolve);
-        })
-    }
-
-    private loadClientThenYoutube = async () => {
-        if ("client" in window.gapi) {
-            console.log("client was already loaded from a previous call, skip it")
-            return;
+    FAKE_VIDEO_ITEM = {
+        "kind": "youtube#video",
+        "etag": "pp1lXyAdkLonHVmdmFUah3oJJIw",
+        "id": {
+            kind: "bla",
+            videoId: "48QQXpbTlVM",
+        },
+        "snippet": {
+            "publishedAt": "2019-11-29T22:24:08Z",
+            "channelId": "UCSju5G2aFaWMqn-_0YBtq5A",
+            "title": "Help, our train home is making 9 quintillion stops.",
+            "description": "Thanks as always to Jane Street! Here is that blog post about 63-bit numbers.\nhttps://blog.janestreet.com/what-is-gained-and-lost-with-63-bit-integers/\n\nMy book is out in North America on the 21 January 2020. Pre-order now!\nhttp://bit.ly/humblepi\n\nHere are the numbers:\n\n9,223,372,036,854,775,798 stops\n2^63 = 9,223,372,036,854,775,808\n7FFFFFFFFFFFFFF6\n111111111111111111111111111111111111111111111111111111111110110\n\nHere are the tweets:\n\nNeil Codling @neilcodling\n👀 Help, our train home is making 9 quintillion stops.\nEIZrPtbW4AA3UL2.jpeg\nhttps://twitter.com/neilcodling/status/1190757074164170758\n\nDaniel @drawRect\nReplying to @neilcodling\nThanks for the tweet. What version of the app are you using? I thought we fixed this bug AGES ago.\nhttps://twitter.com/drawRect/status/1191033767760158720\n\nLia Buddle @LiaBuddle\nReplying to @neilcodling\nHad the same thing in 2017...\nEIc4CNJXsAATexO.jpeg\nhttps://twitter.com/LiaBuddle/status/1190982241914101760\n\nMatt Parker @standupmaths\nThanks everyone who sent me this amazing tweet! So, as always it’s probably a binary overflow problem and sure enough 2^63 = 9,223,372,036,854,775,808 which is close!\nhttps://twitter.com/standupmaths/status/1190940255974760448\n\nWe have a free Think Maths magic trick activity that teachers can use to introduce their students to binary.\nhttp://think-maths.co.uk/standupmaths-videos?yt-trains#train-stops\n\nCORRECTIONS\n- None yet, let me know if you spot any mistakes!\n\nThanks again, as always, for Jane Street being my principal sponsor.\nhttps://www.janestreet.com/\n\nThanks to my Patreon supporters who help make these videos possible. Here is a random subset:\nIcaro Fonseca\nTimothy Lombard\nAndy B\nNokui\nPeter\nTracy Parry\nBrandon\nLindsay Miller\n\nSupport my channel and I can make more maths videos:\nhttps://www.patreon.com/standupmaths\n\nFilming and editing by Alex Genn-Bash\nMusic by Howard Carter\nDesign by Simon Wright\n\nMATT PARKER: Stand-up Mathematician\nWebsite: http://standupmaths.com/\nMaths book: http://wwwh.umble-pi.com\nNerdy maths toys: http://mathsgear.co.uk/",
+            "thumbnails": {
+                "default": {
+                    "url": "https://i.ytimg.com/vi/48QQXpbTlVM/default.jpg",
+                    "width": 120,
+                    "height": 90
+                },
+                "medium": {
+                    "url": "https://i.ytimg.com/vi/48QQXpbTlVM/mqdefault.jpg",
+                    "width": 320,
+                    "height": 180
+                },
+                "high": {
+                    "url": "https://i.ytimg.com/vi/48QQXpbTlVM/hqdefault.jpg",
+                    "width": 480,
+                    "height": 360
+                },
+                "standard": {
+                    "url": "https://i.ytimg.com/vi/48QQXpbTlVM/sddefault.jpg",
+                    "width": 640,
+                    "height": 480
+                },
+                "maxres": {
+                    "url": "https://i.ytimg.com/vi/48QQXpbTlVM/maxresdefault.jpg",
+                    "width": 1280,
+                    "height": 720
+                }
+            },
+            "channelTitle": "Stand-up Maths",
+            "tags": [
+                "maths",
+                "math",
+                "mathematics",
+                "comedy",
+                "stand-up"
+            ],
+            "categoryId": "24",
+            "liveBroadcastContent": "none",
+            "defaultLanguage": "en-GB",
+            "localized": {
+                "title": "Help, our train home is making 9 quintillion stops.",
+                "description": "Thanks as always to Jane Street! Here is that blog post about 63-bit numbers.\nhttps://blog.janestreet.com/what-is-gained-and-lost-with-63-bit-integers/\n\nMy book is out in North America on the 21 January 2020. Pre-order now!\nhttp://bit.ly/humblepi\n\nHere are the numbers:\n\n9,223,372,036,854,775,798 stops\n2^63 = 9,223,372,036,854,775,808\n7FFFFFFFFFFFFFF6\n111111111111111111111111111111111111111111111111111111111110110\n\nHere are the tweets:\n\nNeil Codling @neilcodling\n👀 Help, our train home is making 9 quintillion stops.\nEIZrPtbW4AA3UL2.jpeg\nhttps://twitter.com/neilcodling/status/1190757074164170758\n\nDaniel @drawRect\nReplying to @neilcodling\nThanks for the tweet. What version of the app are you using? I thought we fixed this bug AGES ago.\nhttps://twitter.com/drawRect/status/1191033767760158720\n\nLia Buddle @LiaBuddle\nReplying to @neilcodling\nHad the same thing in 2017...\nEIc4CNJXsAATexO.jpeg\nhttps://twitter.com/LiaBuddle/status/1190982241914101760\n\nMatt Parker @standupmaths\nThanks everyone who sent me this amazing tweet! So, as always it’s probably a binary overflow problem and sure enough 2^63 = 9,223,372,036,854,775,808 which is close!\nhttps://twitter.com/standupmaths/status/1190940255974760448\n\nWe have a free Think Maths magic trick activity that teachers can use to introduce their students to binary.\nhttp://think-maths.co.uk/standupmaths-videos?yt-trains#train-stops\n\nCORRECTIONS\n- None yet, let me know if you spot any mistakes!\n\nThanks again, as always, for Jane Street being my principal sponsor.\nhttps://www.janestreet.com/\n\nThanks to my Patreon supporters who help make these videos possible. Here is a random subset:\nIcaro Fonseca\nTimothy Lombard\nAndy B\nNokui\nPeter\nTracy Parry\nBrandon\nLindsay Miller\n\nSupport my channel and I can make more maths videos:\nhttps://www.patreon.com/standupmaths\n\nFilming and editing by Alex Genn-Bash\nMusic by Howard Carter\nDesign by Simon Wright\n\nMATT PARKER: Stand-up Mathematician\nWebsite: http://standupmaths.com/\nMaths book: http://wwwh.umble-pi.com\nNerdy maths toys: http://mathsgear.co.uk/"
+            },
+            "defaultAudioLanguage": "en-GB"
+        },
+        "contentDetails": {
+            "duration": "PT9M15S",
+            "dimension": "2d",
+            "definition": "hd",
+            "caption": "false",
+            "licensedContent": true,
+            "contentRating": {},
+            "projection": "rectangular"
+        },
+        "statistics": {
+            "viewCount": "721596",
+            "likeCount": "26117",
+            "favoriteCount": "0",
+            "commentCount": "2113"
         }
-
-        const loadClientResponse = await this.loadClient();
-
-        if (!process.env.REACT_APP_GOOGLE_API_KEY) {
-            throw Error("process environment REACT_APP_GOOGLE_API_KEY variable was not found")
-        }
-
-        window.gapi.client.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
-        return await window.gapi.client.load("youtube", "v3");
     }
 
-    private mapItemsToIds = (items: Item[]): string[] => {
-        return items.map((item: Item) => item.id.videoId);
-    }
+    async search (searchQuery: string, publishedBefore: string): Promise<any> {
 
-    search = async (searchQuery: string, publishedBefore: string): Promise<any> => {
-        await this.loadClientThenYoutube();
         //@ts-ignore youtube gets injected dynamically therefore TS will throw an error here
         // return window.gapi.client.youtube.search.list({
         //     "part": [
@@ -160,7 +93,7 @@ export class YoutubeDataProvider {
         return {
             numViews: 8992001,
             ratingSummary: {
-                avgRating: 3.4,
+                avgStars: 3.4,
                 numTotalRatings: 8439209,
             },
             videoLength: 300
@@ -1036,94 +969,50 @@ export class YoutubeDataProvider {
     //     return fakeResponse.items;
     // }
 
-    getVideosFromChannel = async (channelId: string): Promise<Item[]> => {
-        await this.loadClientThenYoutube();
-        //@ts-ignore youtube gets injected dynamically therefore TS will throw an error here
-        let {result} = await window.gapi.client.youtube.search.list({
-            ...this.STANDARD_SEARCH_PARAMETERS,
-            "part": [
-                "snippet, id"
-            ],
-            channelId,
-            "type": [
-                "video"
-            ]
-        });
-        let videoIds = this.mapItemsToIds(result.items);
-        return this.getMoreInfoAboutVideos(videoIds);
+    async getVideosFromChannel (channelId: string): Promise<Item[]> {
+        return [
+            this.FAKE_VIDEO_ITEM
+        ]
 
     }
 
-    getVideosRelatedToVideo = async (videoId: string): Promise<Item[]> => {
-        // 1. make search request to google api with videoId as relatedToVideoId
+    async getVideosRelatedToVideo(videoId: string): Promise<Item[]> {
+        return [
+            this.FAKE_VIDEO_ITEM
+        ]
 
-        await this.loadClientThenYoutube();
-        //@ts-ignore youtube gets injected dynamically therefore TS will throw an error here
-        let {result} = await window.gapi.client.youtube.search.list({
-            ...this.STANDARD_SEARCH_PARAMETERS,
-            "part": [
-                "snippet, id"
-            ],
-            "relatedToVideoId": videoId,
-            "type": [
-                "video"
-            ]
-        });
-        let videoIds = this.mapItemsToIds(result.items);
-
-        // 2. request more information for received videos via videos
-
-        //@ts-ignore
-        let videosWithMoreInfo: Item[] = await this.getMoreInfoAboutVideos(videoIds);
-        return videosWithMoreInfo;
-
-
-        // 3. contact own Rating system for rating for this video
-        // TODO
-
-        // combine everything into a single VideoList
-        // TODO
     }
 
-    getMoreInfoAboutVideos = async (videoIds: string[], parts=["id", "snippet", "contentDetails", "statistics"]): Promise<Item[]> => {
-        await this.loadClientThenYoutube();
-        //@ts-ignore
-        const response = await window.gapi.client.youtube.videos.list({
-            ...this.STANDARD_LIST_PARAMETERS,
-            "part": [
-                parts.join(",")
-            ],
-            "id": videoIds
-        });
-        return response.result.items;
+    async getMoreInfoAboutVideos (videoIds: string[], parts=["id", "snippet", "contentDetails", "statistics"]): Promise<Item[]> {
+        return [
+            this.FAKE_VIDEO_ITEM
+        ]
     }
 
 
 
-    createComment = (videoId: string, comment: string) => {
+    createComment (videoId: string, comment: string) {
 
     }
-    deleteComment = (commentId: string) => {
+    deleteComment (commentId: string) {
 
     }
-    editComment = (commentId: string, newComment: string) => {
+    editComment (commentId: string, newComment: string) {
 
     }
-    getCommentsForVideo = (videoId: string) => {
-
-    }
-
-    createRating = async (videoId: string, rating: Rating) => {
+    getCommentsForVideo (videoId: string) {
 
     }
 
-    getRatingSummary = async (videoId: string): Promise<RatingSummary> => {
+    async createRating (videoId: string, rating: Rating) {
+
+    }
+
+    async getRatingSummary (videoId: string): Promise<RatingSummary> {
         return {
-            avgRating: 3.4,
+            avgStars: 3.4,
             numTotalRatings: 92202,
-            ownRating: {
-                stars: 3
-            }
+            ownGivenStars: 3
         };
     }
 
