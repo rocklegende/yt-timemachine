@@ -1,10 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import '../styles/App.scss';
-import {Item, Rating, RatingSummary, VideoStatistics} from "../providers/youtubeDataProvider";
-import YouTube, {YouTubeProps, Options, PlayerVars} from "react-youtube";
+import {Item, RatingSummary} from "../providers/youtubeDataProvider";
+import YouTube, {Options, PlayerVars} from "react-youtube";
 import {useAuth} from "./AuthContextProvider";
 import {RatingView} from "./Rating";
-import {processYoutubeViewCount, showErrorMessage, showSuccessMessage} from "../helpers/helper";
+import {processYoutubeViewCount, showErrorMessage} from "../helpers/helper";
 import CommentSection from "./CommentSection";
 import CollapsableVideoList from "./CollapsableVideoList";
 import {useParams} from "react-router-dom";

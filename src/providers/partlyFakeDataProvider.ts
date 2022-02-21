@@ -72,7 +72,6 @@ class PartlyFakeDataProvider implements IDataProvider {
     }
 
     async getVideosRelatedToTags(tags: string[]): Promise<{data: any[] | null, error: string | null}> {
-        console.log(navigator.language);
         return {data: mockVideoItems, error: null};
     }
 

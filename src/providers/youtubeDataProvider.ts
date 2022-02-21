@@ -12,6 +12,7 @@ import {DataContextChangeListener, IDataProvider} from "../interfaces/IDataProvi
 import moment from "moment";
 import {findWordsRelatedTo} from "../helpers/relatedWordsHelper";
 import {getNRandomElements} from "../helpers/helper";
+import axios from "axios";
 
 export interface YoutubeSearchResult {
     kind:          string;
@@ -141,15 +142,17 @@ export interface YTSearchRequestParams {
     maxResults?: number;
     publishedAfter?: string;
     publishedBefore?: string;
-    part:string[];
+    part:string;
     order?: YTSearchRequestOrder;
     q?: string;
-    type?: string[];
+    type?: string;
     relatedToVideoId?: string;
     channelId?: string;
 }
 
 export type Chart = "mostPopular";
+
+export type YoutubeResource = "videos" | "search" | "videoCategories" | "channels";
 
 class YoutubeDataProvider implements IDataProvider {
 
@@ -165,7 +168,6 @@ class YoutubeDataProvider implements IDataProvider {
         const years_diff_from_now: number = moment().diff(`${(this.year)}-01-01`, 'years');
         return moment().subtract(years_diff_from_now, 'years')
     }
-
 
     notifyAllListeners(newYear: number) {
         for (const listener of this.changeListeners) {
@@ -200,25 +202,13 @@ class YoutubeDataProvider implements IDataProvider {
         maxResults: 20,
     }
 
-    private loadClient = async () => {
-        return new Promise((resolve, reject) => {
-            gapi.load("client", resolve);
+    async makeYoutubeRequest(ytResource: YoutubeResource, parameters: any): Promise<any> {
+        return await axios.get("/.netlify/functions/youtubeApi", {
+            params: {
+                ...parameters,
+                youtubeResource: ytResource
+            },
         })
-    }
-
-    private async loadClientThenYoutube() {
-        if ("client" in window.gapi) {
-            return;
-        }
-
-        const loadClientResponse = await this.loadClient();
-
-        if (!process.env.REACT_APP_GOOGLE_API_KEY) {
-            throw Error("process environment REACT_APP_GOOGLE_API_KEY variable was not found")
-        }
-
-        window.gapi.client.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
-        return await window.gapi.client.load("youtube", "v3");
     }
 
     private mapItemsToIds = (items: Item[]): string[] => {
@@ -229,30 +219,18 @@ class YoutubeDataProvider implements IDataProvider {
     }
 
     async search (searchQuery: string, publishedBefore: string): Promise<any> {
-        await this.loadClientThenYoutube();
-        //@ts-ignore youtube gets injected dynamically therefore TS will throw an error here
-        // return window.gapi.client.youtube.search.list({
-        //     "part": [
-        //         "snippet"
-        //     ],
-        //     "relatedToVideoId": "Ks-_Mh1QhMc",
-        //     "type": [
-        //         "video"
-        //     ]
-        // })
+        return null;
     }
 
-    async makeYoutubeSearchRequest(params: YTSearchRequestParams): Promise<{data: Item[] | null, error: string | null}> {
-        await this.loadClientThenYoutube();
+    async makeYoutubeListRequest(parameters: any): Promise<any> {
+        return this.makeYoutubeRequest("videos", parameters);
+    }
 
-        //@ts-ignore
-        let {result} = await window.gapi.client.youtube.search.list(params);
-        console.log(result);
-        // if (result.status !== 200) {
-        //     return {data: null, error: "Something went wrong"}
-        // }
+    async makeYoutubeSearchRequest(parameters: YTSearchRequestParams): Promise<{data: Item[] | null, error: string | null}> {
 
-        let videoIds = this.mapItemsToIds(result.items);
+        const _result: any = await this.makeYoutubeRequest("search", parameters);
+
+        let videoIds = this.mapItemsToIds(_result.data.items);
         const videosWithFullContentInfo = await this.getMoreInfoAboutVideos(videoIds);
         return {
             data: videosWithFullContentInfo.data,
@@ -263,20 +241,15 @@ class YoutubeDataProvider implements IDataProvider {
     async getLatestVideos(): Promise<{data: Item[] | null, error: string | null}> {
         const mostPopularCategories = ["Sports", "Film", "Animals", "Viral", "Science", "Music", "News", "Gaming"]
         const searchQuery = getNRandomElements(mostPopularCategories, 4).join("|");
-        console.log(searchQuery);
 
         return this.makeYoutubeSearchRequest({
             "maxResults": 9,
             "publishedAfter": this.getCurrentDateAsUTC(7),
             "publishedBefore": this.getCurrentDateAsUTC(),
-            "part": [
-                "snippet, id"
-            ],
+            "part": "snippet, id",
             "order": "viewCount",
             "q": searchQuery,
-            "type": [
-                "video"
-            ]
+            "type": "video",
         })
     }
 
@@ -288,36 +261,25 @@ class YoutubeDataProvider implements IDataProvider {
         return this.makeYoutubeSearchRequest({
             "maxResults": this.STANDARD_SEARCH_PARAMETERS.maxResults,
             "publishedBefore": this.getCurrentDateAsUTC(),
-            "part": [
-                "snippet, id"
-            ],
+            "part": "snippet, id",
             channelId,
-            "type": [
-                "video"
-            ]
+            "type": "video"
         });
     }
 
     async getVideosRelatedToVideo(videoId: string): Promise<{data: Item[] | null, error: string | null}> {
-
         return this.makeYoutubeSearchRequest({
             "maxResults": this.STANDARD_SEARCH_PARAMETERS.maxResults,
             "publishedBefore": this.getCurrentDateAsUTC(),
-            "part": [
-                "snippet, id"
-            ],
+            "part": "snippet, id",
             "relatedToVideoId": videoId,
-            "type": [
-                "video"
-            ]
+            "type": "video"
         });
     }
 
     async getVideosRelatedToTags(tags: string[]): Promise<{data: Item[] | null, error: string | null}> {
         return this.makeYoutubeSearchRequest({
-            "part": [
-                "snippet,id"
-            ],
+            "part": "snippet,id",
             "maxResults": this.STANDARD_SEARCH_PARAMETERS.maxResults,
             "publishedBefore": this.getCurrentDateAsUTC(),
             "q": getNRandomElements(tags, 5).join("|")
@@ -328,20 +290,13 @@ class YoutubeDataProvider implements IDataProvider {
         videoIds: string[],
         parts=["id", "snippet", "contentDetails", "statistics"]
     ): Promise<{data: Item[] | null, error: string | null}> {
-        await this.loadClientThenYoutube();
-        //@ts-ignore
-        const response = await window.gapi.client.youtube.videos.list({
+        const response = await this.makeYoutubeListRequest({
             ...this.STANDARD_LIST_PARAMETERS,
-            "part": [
-                parts.join(",")
-            ],
-            "id": videoIds
-        });
-        // if (response.status !== 200) {
-        //     return {data: null, error: "Youtube list request failed"}
-        // }
+            "part": parts.join(","),
+            "id": videoIds.join(",")
+        })
 
-        return {data: response.result.items, error: null}
+        return {data: response.data.items, error: null}
     }
 
     async createComment (comment: YTComment) {
@@ -378,55 +333,31 @@ class YoutubeDataProvider implements IDataProvider {
 
     async getVideosFromCategory(title: string, chart: Chart): Promise<{data: Item[] | null, error: string | null}> {
         const relatedWordsToCategory = findWordsRelatedTo(title);
-        console.log({title, words: relatedWordsToCategory});
 
         return this.makeYoutubeSearchRequest({
-            "part": [
-                "id,snippet"
-            ],
+            "part": "id,snippet",
             "maxResults": 8,
             "q": relatedWordsToCategory.join("|"),
             "publishedBefore": this.getCurrentDateAsUTC(),
         })
-
-
-        // const response = await window.gapi.client.youtube.videos.list({
-        //     "part": [
-        //         "id,snippet,contentDetails,statistics"
-        //     ],
-        //     "maxResults": 8,
-        //     "chart": "mostPopular",
-        //     "regionCode": "US",
-        //     "videoCategoryId": categoryId
-        // });
-        // console.log({videoFromCategory: response})
-        // return {data: response.result.items, error: null};
     }
+
     async getCategories(): Promise<any> {
-        await this.loadClientThenYoutube();
-        //@ts-ignore
-        const response = await window.gapi.client.youtube.videoCategories.list({
-            "part": [
-                "snippet"
-            ],
+        const response = await this.makeYoutubeRequest("videoCategories", {
+            "part": "snippet",
             "regionCode": "US"
-        });
-        return {data: response.result.items, error: null};
+        })
+
+        return {data: response.data.items, error: null};
     }
 
     async getChannelInformation(channelId: string): Promise<{data: any, error: string | null}> {
-        await this.loadClientThenYoutube();
-        //@ts-ignore
-        const response = await window.gapi.client.youtube.channels.list({
-            "part": [
-                "snippet,contentDetails,statistics"
-            ],
-            "id": [
-                channelId
-            ]
+        const response = await this.makeYoutubeRequest("channels", {
+            "part": "snippet,contentDetails,statistics",
+            "id": channelId
         })
 
-        return {data: response.result.items[0], error: null};
+        return {data: response.data.items[0], error: null};
     }
 }
 

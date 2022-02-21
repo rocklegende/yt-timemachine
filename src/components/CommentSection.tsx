@@ -127,9 +127,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({videoId}) => {
                 ))}
             </div>
             <div className={"comment-section-pagination"}>
-                <button disabled={page === 1} onClick={() => decreasePage()}>{"<"}</button>
+                <button disabled={page === 1} onClick={() => decreasePage()}><i className={"fa-solid fa-chevron-left"}></i></button>
                 <span className={"page-number"}>{page} / {pageCount}</span>
-                <button disabled={page === pageCount} onClick={() => increasePage()}>{">"}</button>
+                <button disabled={page === pageCount} onClick={() => increasePage()}><i className={"fa-solid fa-chevron-right"}></i></button>
             </div>
         </div>
     )

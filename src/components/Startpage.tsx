@@ -21,7 +21,6 @@ function Startpage() {
         if (error) {
             showErrorMessage("Error loading categories of US");
         }
-        console.log(data);
         setVideoCategories(data);
     }
 

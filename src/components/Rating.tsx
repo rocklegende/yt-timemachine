@@ -1,6 +1,5 @@
-import React, {FC, FormEvent, useEffect} from "react";
+import React, {FC, useEffect} from "react";
 import {useAuth} from "./AuthContextProvider";
-import {showErrorMessage} from "../helpers/helper";
 import {RatingSummary} from "../providers/youtubeDataProvider";
 
 type RatingProps = {
@@ -21,8 +20,8 @@ export const RatingView: FC<RatingProps>
            viewCount,
            ratingSummary
     }) => {
-    const valueChanged = (event: any) => {
-        onRatingChanged(event.target.value);
+    const valueChanged = (stars: number) => {
+        onRatingChanged(stars);
     }
 
     const auth = useAuth();
@@ -71,21 +70,37 @@ export const RatingView: FC<RatingProps>
                 <div className={"rating"}>
                     <span><strong>Rate:</strong> </span>
                     <div id="full-stars-example-two">
-                        <div className={`rating-group ${!ratable ? "disabled" : ""}`} onChange={(event) => valueChanged(event)}>
-                            <label aria-label="1 star" className="rating__label" htmlFor="rating3-1"><RatingIcon/></label>
-                            <input readOnly className={`rating__input ${!ratable ? "disabled" : ""}`} name="rating3" id="rating3-1" value="1" type="radio" disabled={!ratable} checked={value === 1}/>
-                            <label aria-label="2 stars" className="rating__label" htmlFor="rating3-2"><RatingIcon/></label>
-                            <input readOnly className={`rating__input ${!ratable ? "disabled" : ""}`} name="rating3" id="rating3-2" value="2" type="radio" disabled={!ratable} checked={value === 2}/>
-                            <label aria-label="3 stars" className="rating__label" htmlFor="rating3-3"><RatingIcon/></label>
-                            <input readOnly className={`rating__input ${!ratable ? "disabled" : ""}`} name="rating3" id="rating3-3" value="3" type="radio" disabled={!ratable} checked={value === 3}/>
-                            <label aria-label="4 stars" className="rating__label" htmlFor="rating3-4"><RatingIcon/></label>
-                            <input readOnly className={`rating__input ${!ratable ? "disabled" : ""}`} name="rating3" id="rating3-4" value="4" type="radio" disabled={!ratable} checked={value === 4}/>
-                            <label aria-label="5 stars" className="rating__label" htmlFor="rating3-5"><RatingIcon/></label>
-                            <input readOnly className={`rating__input ${!ratable ? "disabled" : ""}`} name="rating3" id="rating3-5" value="5" type="radio" disabled={!ratable} checked={value === 5}/>
+                        <div className={`rating-group ${!ratable ? "disabled" : ""}`}>
+                            {[1,2,3,4,5].map(numStars => (<>
+                                <label
+                                    key={`rating3-label-${numStars}`}
+                                    aria-label={`${numStars} star`}
+                                    className="rating__label"
+                                    htmlFor={`rating3-${numStars}`}
+                                >
+                                    <RatingIcon/>
+                                </label>
+                                <input
+                                    readOnly
+                                    className={`rating__input ${!ratable ? "disabled" : ""}`}
+                                    name="rating3"
+                                    id={`rating3-${numStars}`}
+                                    value={numStars}
+                                    type="radio"
+                                    disabled={!ratable}
+                                    checked={value === numStars}
+                                    onClick={() => valueChanged(numStars)}
+                                />
+                            </>))}
                         </div>
                     </div>
 
-                    <span>{ratingSummary?.numTotalRatings ? `${ratingSummary.numTotalRatings.toLocaleString("en-US")} ratings` : "no ratings yet"}</span>
+                    {ratingSummary?.numTotalRatings ? (
+                        <span>{`${ratingSummary.numTotalRatings.toLocaleString("en-US")} ratings`} &#183; {ratingSummary.avgStars.toFixed(2)} avg</span>
+                    ) : (
+                        <span>{"no ratings yet"}</span>
+                    )}
+
 
                 </div>
                 <div className={"view-count"}>

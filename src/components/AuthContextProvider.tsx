@@ -36,11 +36,9 @@ export const AuthContextProvider: FunctionComponent<AuthContextProviderProps> = 
     useEffect(() => {
         // try to set the user immediately if token already in local storage
         setUser(authProvider.getUser());
-        console.log(authProvider.getUser());
 
         // in case the user just logged in, listen for the SIGNED_IN event after redirection from google auth, then set the current user
         const authStateChangeListener = supabase.auth.onAuthStateChange((event, session) => {
-            console.log(event);
             if (event === 'SIGNED_IN') setUser(authProvider.getUser())
         })
         // remove the listener after 60 seconds by default

@@ -3,9 +3,7 @@ import {useData} from "./DataContextProvider";
 import {Item} from "../providers/youtubeDataProvider";
 import {showErrorMessage} from "../helpers/helper";
 import '../styles/videoGridStyles.scss';
-import {Link} from "react-router-dom";
 import VideoThumbnailRenderer from "./VideoThumbnailRenderer";
-import {findWordsRelatedTo} from "../helpers/relatedWordsHelper";
 
 type VideoRecommendationGridProps = {
     categoryId: string;
@@ -28,7 +26,6 @@ const VideoRecommendationSection: FunctionComponent<VideoRecommendationGridProps
         }
 
         const {data, error} = await dataProvider.getVideosFromCategory(title, "mostPopular");
-        console.log(data);
         if (error) {
             showErrorMessage(`Error fetching video for category ${title}`);
             return;

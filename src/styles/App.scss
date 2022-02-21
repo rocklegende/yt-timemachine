@@ -26,6 +26,7 @@ a {
 button {
   position: relative;
   color: steelblue;
+  font-size: 0.9rem;
   font-family: inherit;
   padding: 0.5rem;
   font-weight: bold;
@@ -52,6 +53,7 @@ button::before {
 button[disabled] {
   color: grey;
   cursor: initial;
+  background-color: $body-background-color;
 }
 
 header {
@@ -482,7 +484,6 @@ input:hover {
     display: grid;
     grid-auto-flow: row;
     grid-template-columns: 1fr var(--side-view-width);
-    grid-template-rows: calc(100vh - var(--header-height));
   }
 
   .primary-tab {

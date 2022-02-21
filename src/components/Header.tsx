@@ -1,21 +1,10 @@
 import logo from "../images/logo.png";
-import React, {useState} from "react";
+import React from "react";
 import {useAuth} from "./AuthContextProvider";
 import {Link} from "react-router-dom";
-import {useData} from "./DataContextProvider";
 
 export default function Header() {
     const auth = useAuth();
-    const dataContext = useData();
-    const dataProvider = dataContext.dataProvider;
-
-    const [year, setYear] = useState<number>(dataProvider.year);
-
-    const changeYear = (newYear: number) => {
-        setYear(newYear);
-        dataProvider.changeYear(newYear);
-        console.log(dataProvider);
-    }
 
     return (
         <header className="App-header">
@@ -26,22 +15,6 @@ export default function Header() {
                     </Link>
                     <span className={"web-site-title"} aria-label={"title"}>YouTube time machine</span>
                 </div>
-                {/*<div className={"youtube-year-selector-container"}>*/}
-                {/*    <label htmlFor={"youtube-year-selector"} style={{marginRight: "0.5rem"}}>bring me back to</label>*/}
-                {/*    <select*/}
-                {/*        name="youtube-year-selector"*/}
-                {/*        id="youtube-year-selector"*/}
-                {/*        value={`${year}`}*/}
-                {/*        className={"youtube-year-selector"}*/}
-                {/*        onChange={(e) => changeYear(parseInt(e.target.value))}*/}
-                {/*    >*/}
-                {/*        <option value="2008">2008</option>*/}
-                {/*        <option value="2009">2009</option>*/}
-                {/*        <option value="2010">2010</option>*/}
-                {/*        <option value="2011">2011</option>*/}
-                {/*        <option value="2012">2012</option>*/}
-                {/*    </select>*/}
-                {/*</div>*/}
                 <div className={"auth-information"}>
                     {auth.user ? (
                         <>
