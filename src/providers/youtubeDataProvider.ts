@@ -12,7 +12,7 @@ import {DataContextChangeListener, IDataProvider} from "../interfaces/IDataProvi
 import moment from "moment";
 import {findWordsRelatedTo} from "../helpers/relatedWordsHelper";
 import {getNRandomElements} from "../helpers/helper";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 
 export interface YoutubeSearchResult {
     kind:          string;
@@ -203,7 +203,7 @@ class YoutubeDataProvider implements IDataProvider {
     }
 
     async makeYoutubeRequest(ytResource: YoutubeResource, parameters: any): Promise<any> {
-        return await axios.get("/.netlify/functions/youtubeApi", {
+        return axios.get("/.netlify/functions/youtubeApi", {
             params: {
                 ...parameters,
                 youtubeResource: ytResource
@@ -228,19 +228,28 @@ class YoutubeDataProvider implements IDataProvider {
 
     async makeYoutubeSearchRequest(parameters: YTSearchRequestParams): Promise<{data: Item[] | null, error: string | null}> {
 
-        const _result: any = await this.makeYoutubeRequest("search", parameters);
+        try {
+            const _result: any = await this.makeYoutubeRequest("search", parameters);
+            let videoIds = this.mapItemsToIds(_result.data.items);
+            const videosWithFullContentInfo = await this.getMoreInfoAboutVideos(videoIds);
+            return {
+                data: videosWithFullContentInfo.data,
+                error: null
+            };
+        } catch(error: any) {
+            console.log(error.toJSON());
 
-        let videoIds = this.mapItemsToIds(_result.data.items);
-        const videosWithFullContentInfo = await this.getMoreInfoAboutVideos(videoIds);
-        return {
-            data: videosWithFullContentInfo.data,
-            error: null
-        };
+            let errorMessage = "error occured";
+            if (error.response.status === 403) {
+                errorMessage = "YouTube quota was exceeded"
+            }
+            return {data: null, error: errorMessage}
+        }
     }
 
     async getLatestVideos(): Promise<{data: Item[] | null, error: string | null}> {
-        const mostPopularCategories = ["Sports", "Film", "Animals", "Viral", "Science", "Music", "News", "Gaming"]
-        const searchQuery = getNRandomElements(mostPopularCategories, 4).join("|");
+        const mostPopularCategories = ["Sports", "Film", "Animals", "Viral", "Science", "Music", "Travel", "Gaming", "Videoblogging", "Comedy", "Politics"]
+        const searchQuery = getNRandomElements(mostPopularCategories, 3).join("|");
 
         return this.makeYoutubeSearchRequest({
             "maxResults": 9,
@@ -282,6 +291,7 @@ class YoutubeDataProvider implements IDataProvider {
             "part": "snippet,id",
             "maxResults": this.STANDARD_SEARCH_PARAMETERS.maxResults,
             "publishedBefore": this.getCurrentDateAsUTC(),
+            "order": "viewCount",
             "q": getNRandomElements(tags, 5).join("|")
         });
     }
@@ -338,6 +348,7 @@ class YoutubeDataProvider implements IDataProvider {
             "part": "id,snippet",
             "maxResults": 8,
             "q": relatedWordsToCategory.join("|"),
+            // "order": "viewCount",
             "publishedBefore": this.getCurrentDateAsUTC(),
         })
     }
