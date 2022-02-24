@@ -17,17 +17,19 @@ const VideoRecommendationSection: FunctionComponent<VideoRecommendationGridProps
     const dataProvider = dataContext.dataProvider;
 
     const [videos, setVideos] = useState<Item[]>([]);
+    const [errorOccured, setErrorOccured] = useState(false);
     const fetchAndSetVideos = async () => {
         if (categoryId === "latest") {
             const {data, error} = await dataProvider.getLatestVideos();
-            if (error) console.error(error)
+            if (error) setErrorOccured(true);
             if (data) setVideos(data);
             return;
         }
 
         const {data, error} = await dataProvider.getVideosFromCategory(title, "mostPopular");
         if (error) {
-            showErrorMessage(`Error fetching video for category ${title}`);
+            // showErrorMessage(`Error fetching video for category ${title}`);
+            setErrorOccured(true)
             return;
         }
         if (data) setVideos(data);
@@ -41,6 +43,10 @@ const VideoRecommendationSection: FunctionComponent<VideoRecommendationGridProps
             dataProvider.removeChangeListener(listener);
         }
     }, [])
+
+    if (errorOccured) {
+        return <></>
+    }
 
     return (
         <div className={`${"video-recommendation-section"}`}>

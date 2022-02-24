@@ -75,6 +75,9 @@ function VideoWatchView() {
     useEffect(() => {
         const getMoreInformationAboutVideoFromUrl = async () => {
             let res = await dataProvider.getMoreInfoAboutVideos([currentVideoId]);
+            if (res.error) {
+                showErrorMessage(res.error);
+            }
             if (!res.data || (res.data && res.data.length === 0) ) {
                 return;
             }
@@ -84,7 +87,7 @@ function VideoWatchView() {
 
             let _relatedVideosResponse = await dataProvider.getVideosRelatedToTags(videoItem.snippet!.tags || []);
             if (_relatedVideosResponse.error) {
-                console.error(_relatedVideosResponse.error);
+                showErrorMessage(_relatedVideosResponse.error);
             }
             if (_relatedVideosResponse.data) {
                 setRelatedVideos(_relatedVideosResponse.data.filter(item => item.id !== videoId));
@@ -92,7 +95,7 @@ function VideoWatchView() {
 
             let _moreVideosFromChannelResponse = await dataProvider.getVideosFromChannel(videoItem.snippet?.channelId!);
             if (_moreVideosFromChannelResponse.error) {
-                console.error(_moreVideosFromChannelResponse.error);
+                showErrorMessage(_moreVideosFromChannelResponse.error);
             }
             if (_moreVideosFromChannelResponse.data) {
                 setMoreVideosFromChannel(_moreVideosFromChannelResponse.data.filter(item => item.id !== videoId));
