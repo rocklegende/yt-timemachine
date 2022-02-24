@@ -26,7 +26,7 @@ const handler = async (event) => {
       process.env.REACT_APP_GOOGLE_API_KEY_3,
       process.env.REACT_APP_GOOGLE_API_KEY_4
   ]
-  for (let i = 0; i < available_keys.length - 4; i++) {
+  for (let i = 0; i < available_keys.length; i++) {
     const randomNumber = Math.floor(Math.random() * available_keys.length);
     // console.log(`random number is ${randomNumber}`);
     const key = available_keys[i];
