@@ -85,6 +85,8 @@ function VideoWatchView() {
             let videoItem = res.data[0];
             setCurrentVideoItem(videoItem);
 
+            console.log(videoItem);
+
             let _relatedVideosResponse = await dataProvider.getVideosRelatedToTags(videoItem.snippet!.tags || []);
             if (_relatedVideosResponse.error) {
                 showErrorMessage(_relatedVideosResponse.error);
@@ -133,17 +135,17 @@ function VideoWatchView() {
                     <div className={"secondary-tab"}>
                         {currentVideoItem.snippet && (<CreatorInfoBox channelId={currentVideoItem.snippet.channelId} />)}
 
-                        <CollapsableVideoList
+                        {moreVideosFromChannel.length > 0 && (<CollapsableVideoList
                             items={moreVideosFromChannel}
                             title={`More From: ${currentVideoItem.snippet?.channelTitle}`}
                             collapsed={true}
-                        />
+                        />)}
 
-                        <CollapsableVideoList
+                        {relatedVideos.length > 0 && (<CollapsableVideoList
                             items={relatedVideos}
                             title={"Related videos"}
                             collapsed={false}
-                        />
+                        />)}
                     </div>
                 </>
             )}
