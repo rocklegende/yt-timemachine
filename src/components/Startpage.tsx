@@ -66,13 +66,13 @@ function Startpage() {
                 title={"New this week"}
                 firstElementAsHero={true}
             />
-            {/*{videoCategories.slice(0, 6).map((category: any, index) => (*/}
-            {/*    <VideoRecommendationSection*/}
-            {/*        key={index}*/}
-            {/*        categoryId={category.id}*/}
-            {/*        title={category.snippet.title}*/}
-            {/*    />*/}
-            {/*))}*/}
+            {videoCategories.slice(0, 6).map((category: any, index) => (
+                <VideoRecommendationSection
+                    key={index}
+                    categoryId={category.id}
+                    title={category.snippet.title}
+                />
+            ))}
         </div>
     );
 }
