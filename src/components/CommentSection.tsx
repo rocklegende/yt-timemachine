@@ -15,7 +15,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({videoId}) => {
     const auth = useAuth();
     const dataContext = useData();
     const dataProvider = dataContext.dataProvider;
-    const [pageCount, setPageCount] = useState();
+    const [pageCount, setPageCount] = useState(1);
     const [page, setPage] = useState(1);
     const [comments, setComments] = useState<YTComment[]>([]);
     const [commentsCount, setCommentsCount] = useState(0);
@@ -24,7 +24,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({videoId}) => {
     const fetchAndSetComments = async (pageNumber: number) => {
         const {commentsPageCount, data, error} = await dataProvider.getCommentsForVideo(videoId, pageNumber);
         if (!data) {
-            showErrorMessage(`Fetching comments failed, reason: ${error}`)
+            console.error(`Fetching comments failed, reason: ${error?.message}`)
             return;
         }
         setComments(data);
@@ -35,7 +35,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({videoId}) => {
     const fetchAndSetCommentsCount = async () => {
         const response = await dataProvider.getCommentsCount(videoId);
         if (response.count === null) {
-            showErrorMessage(`Fetching comments count failed`)
+            console.error(`Fetching comments count failed, ${response.error?.message}`)
             return;
         }
         setCommentsCount(response.count);
